@@ -1,0 +1,13 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+{% for message in messages %}
+  <div class="alert alert-success">
+    {{ message }}
+  </div>
+{% endfor %}
+
+<h2>Home page</h2>
+
+{% endblock content %}
