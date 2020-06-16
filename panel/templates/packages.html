@@ -1,0 +1,17 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<div class="row p-2">
+
+    {% for package in packages %}
+      <div class="card col-md-4 m-1">
+          <div class="card-body">
+            <h5><a href="packages/{{ package.id }}">{{ package.name }}</a></h5>
+          </div>
+      </div>
+    {% endfor %}
+
+</div>
+
+{% endblock content %}

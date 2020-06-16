@@ -1,0 +1,20 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<div class="row p-2">
+
+    {% for product in products %}
+      <div class="card col-md-3 m-1 p-1">
+          <img class="card-img-top product-img" src="{{ product.image.url }}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description }} - <i>{{ product.price }} so'm</i></p>
+          </div>
+      </div>
+    {% endfor %}
+
+</div>
+
+
+{% endblock content %}
