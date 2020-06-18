@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'panel.apps.PanelConfig'
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'controlsystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'controlsystem',
+        'NAME': 'accounting',
         'USER': 'postgres',
         'PASSWORD': '123456',
         'HOST': 'localhost'

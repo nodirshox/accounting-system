@@ -15,12 +15,8 @@
     <form action='registration' method="POST">
       {% csrf_token %}
       <div class="form-group">
-        <label for="first_name">First name</label>
-        <input type="text" class="form-control" id="first_name" name="first_name" required>
-      </div>
-      <div class="form-group">
-          <label for="last_name">Last name</label>
-          <input type="text" class="form-control" id="last_name" name="last_name" required>
+        <label for="full_name">Full name</label>
+        <input type="text" class="form-control" id="full_name" name="full_name" required>
       </div>
       <div class="form-group">
           <label for="username">Username</label>

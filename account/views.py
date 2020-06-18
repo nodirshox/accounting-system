@@ -26,7 +26,7 @@ def login(request):
                 messages.info(request, "Username or password incorrect")
                 return redirect('/login')
         else:
-            return render(request, 'login.html')
+            return render(request, 'profile/login.html')
 
 def logout(request):
     if request.user.is_authenticated:
@@ -41,8 +41,7 @@ def registration(request):
         return redirect('/profile')
     else:
         if request.method == 'POST':
-            first_name = request.POST['first_name']
-            last_name = request.POST['last_name']
+            full_name = request.POST['full_name']
             username = request.POST['username']
             email = request.POST['email']
             password = request.POST['password']
@@ -59,7 +58,7 @@ def registration(request):
                 verified_profile = False
                 messages.info(request, 'Email taken')
             if verified_profile:
-                user = User.objects.create_user(username=username, password=password, email=email, first_name=first_name, last_name=last_name)
+                user = User.objects.create_user(username=username, password=password, email=email, first_name=full_name)
                 user.save()
                 messages.info(request, 'Profile createad, please log in...')
                 return redirect('/login')
@@ -67,11 +66,11 @@ def registration(request):
                 return redirect('/registration')
 
         else:
-            return render(request, 'registration.html')
+            return render(request, 'profile/registration.html')
 
 def profile(request):
     if request.user.is_authenticated:
-        return render(request, 'profile.html')
+        return render(request, 'profile/profile.html')
     else:
         return redirect('/login')
 
@@ -79,15 +78,19 @@ def profile(request):
 
 def products(request):
     products = Product.objects.all()
-    return render(request, 'products.html', {'products': products})
+    return render(request, 'product/products.html', {'products': products})
 
 # Packages
 
 def packages(request):
     packages = Package.objects.all()
-    return render(request, 'packages.html', {'packages': packages})
+    return render(request, 'product/packages.html', {'packages': packages})
 
 def package(request, id):
     one_package = Package.objects.get(id=id)
     filtered_micropackages = Micropackage.objects.filter(package=id)
-    return render(request, 'one_package.html', {'package': one_package, 'micropackages': filtered_micropackages})
+    return render(request, 'product/one_package.html', {'package': one_package, 'micropackages': filtered_micropackages})
+
+def micropackage(request, id):
+    micropackage = Micropackage.objects.get(id=id)
+    return render(request, 'product/micropackage.html', {'micropackage': micropackage})
