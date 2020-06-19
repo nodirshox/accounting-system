@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Package, Micropackage, Packagesize, Packageprice
+from .models import *
 
 
 # Products
@@ -8,3 +8,4 @@ admin.site.register(Package)
 admin.site.register(Micropackage)
 admin.site.register(Packagesize)
 admin.site.register(Packageprice)
+admin.site.register(Currency)
