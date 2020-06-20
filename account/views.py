@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
+from warehouse.models import Warehouse
 
 # Create your views here.
 
@@ -69,7 +70,12 @@ def registration(request):
             return render(request, 'profile/registration.html')
 
 def profile(request):
+    current_user = request.user
+    warehouse = Warehouse.objects.filter(owner=current_user.id)
+    warehouse_count = warehouse.count()
+    context = { 'warehouse': warehouse, 'warehouse_count': warehouse_count }
+
     if request.user.is_authenticated:
-        return render(request, 'profile/profile.html')
+        return render(request, 'profile/profile.html', context)
     else:
         return redirect('/login')

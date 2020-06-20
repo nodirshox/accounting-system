@@ -1,0 +1,16 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<h3>Warehouse</h3>
+<a href="clients">My clients</a>
+<br>
+<a href="create-warehouse">Create Warehouse</a>
+<br>
+{% for warehouse in warehouses %}
+
+    {{ warehouse.id }}
+
+{% endfor %}
+
+{% endblock content %}

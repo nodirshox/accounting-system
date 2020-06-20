@@ -9,8 +9,14 @@
 {% endfor %}
 
 <h3>Profile</h3>
-Hello, {{ user.first_name }}
-<br>
+
+<p>Hello, {{ user.first_name }}</p>
+
+{% if warehouse_count == 0 %}
+  <div class="alert alert-info">You do not have a warehouse. <a href="create-warehouse"><u>Create warehouse</u></a></div>
+{% elif warehouse_count == 1 %}
+  <a href="warehouse">My Warehouse</a>
+{% endif %}
 <a href="#">Change password</a>
 <br>
 <a href="logout">Sign out</a>

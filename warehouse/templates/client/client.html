@@ -1,0 +1,34 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<h3>Clients</h3>
+
+<table class="table table-bordered table-hover table-responsive-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Number</th>
+            <th>Registration</th>
+            <th>Update</th>
+            <th>Remove</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in clients %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{client.name}}</td>
+            <td>{{client.number}}</td>
+            <td>{{client.date|date:'d.m.Y'}}</td>
+            <td><a class="btn btn-sm btn-info" href="">Update</a></td>
+            <td><a class="btn btn-sm btn-danger" href="">Remove</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<b>Total - {{ client_count }}</b> | <a href="/warehouse/new-client">Add new client</a>
+
+
+{% endblock content %}

@@ -1,0 +1,24 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<div class="container text-align-center pb-3 pt-3">
+    <div class="col-md-6">
+      <h3>New Client</h3>  
+      <form action="login" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="full_name">Full name</label>
+          <input type="text" class="form-control" id="full_name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="number">Number</label>
+            <input type="text" class="form-control" id="number" name="number" maxlength="8" placeholder="UZ000000" required>
+          </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+      </form>
+      <a href="/warehouse/clients">Back to list</a>
+    </div>
+  </div>
+
+{% endblock content %}
