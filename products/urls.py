@@ -3,9 +3,10 @@ from . import views
 
 urlpatterns = [
     # Products
-    path('', views.products, name='Products'),
+    path('products/', views.products, name='products'),
+    
     # Packages
-    path('packages', views.packages, name='Packages'),
-    path('packages/<int:id>', views.package, name='One package'),
-    path('micropackage/<int:id>', views.micropackage, name='Micropackage')
+    path('packages/', views.packages, name='packages'),
+    path('packages/<int:id>/', views.package, name='one_package'),
+    path('micropackage/<int:id>/', views.micropackage, name='micropackage')
 ]

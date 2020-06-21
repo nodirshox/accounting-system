@@ -10,15 +10,10 @@
     </div>
 </div>
 
-<div class="row p-2">
-    <ul>
+<ul>
     {% for micropackage in micropackages %}
-        <li><a href="/products/micropackage/{{ micropackage.id }}">{{ micropackage.name }}</a></li>
+        <li><a href="{% url 'micropackage' micropackage.id %}">{{ micropackage.name }}</a></li>
     {% endfor %}
-    </ul>
-</div>
-
-<a href="/packages">All packages</a>
-
+</ul>
 
 {% endblock content %}

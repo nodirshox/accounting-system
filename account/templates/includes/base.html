@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
-    <link rel="icon" href="{% static 'assets/images/favicon.ico' %}" type="image/gif" sizes="16x16">
+    <link rel="icon" href="{% static 'assets/images/favicon.png' %}" type="image/png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <title>Accounting system</title>
+    <title>Accounting System</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-1">
@@ -22,14 +22,14 @@
                 <a class="nav-link" href="/profile">Profile</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/logout">Logout</a>
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
             </li>
             {% else %}
             <li class="nav-item active">
-                <a class="nav-link" href="/registration">Sign up</a>
+                <a class="nav-link" href="{% url 'login' %}">Sign in</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/login">Sign in</a>
+                <a class="nav-link" href="{% url 'registration' %}">Registration</a>
             </li>
             {% endif %}
           </ul>
@@ -39,19 +39,19 @@
         {% block content %}
 
         {% endblock content %}
-        <footer class="pt-4 my-md-1 pt-md-3 border-top">
+        <footer class="pt-4 pt-3 mt-3 border-top">
             <div class="row">
             <div class="col-6 col-md">
                 <h5>Navigation</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="/products">Products</a></li>
-                    <li><a class="text-muted" href="/products/packages">Packages</a></li>
+                    <li><a class="text-muted" href="{% url 'products' %}">Products</a></li>
+                    <li><a class="text-muted" href="{% url 'packages' %}">Packages</a></li>
                 </ul>
             </div>
             <div class="col-6 col-md">
                 <h5>About</h5>
                 <ul class="list-unstyled text-small">
-                <li><a class="text-muted" href="/admin">Admin</a></li>
+                    <li><a class="text-muted" href="/admin">Admin</a></li>
                 </ul>
             </div>
             </div>

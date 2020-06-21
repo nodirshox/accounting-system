@@ -3,10 +3,8 @@ from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from warehouse.models import Warehouse
 
-# Create your views here.
-
 # Main page
-def mainpage(request):
+def home_page(request):
     return render(request, 'home_page.html')
 
 # Authentication, Registration, Profile
@@ -21,10 +19,10 @@ def login(request):
             user = auth.authenticate(username=username, password=password)
             if user is not None:
                 auth.login(request, user)
-                messages.info(request, 'Successfully signed')
+                messages.info(request, 'You have successfully logged in.')
                 return redirect('/profile')
             else:
-                messages.info(request, "Username or password incorrect")
+                messages.info(request, "Incorrect username or password.")
                 return redirect('/login')
         else:
             return render(request, 'profile/login.html')
@@ -32,7 +30,7 @@ def login(request):
 def logout(request):
     if request.user.is_authenticated:
         auth.logout(request)
-        messages.info(request, 'Successfully sign out')
+        messages.info(request, 'You have successfully logged out.')
         return redirect('/login')
     else:
         return redirect('/')
@@ -51,17 +49,17 @@ def registration(request):
             verified_profile = True
             if password != confirm_password:
                 verified_profile = False
-                messages.info(request, 'Password not matching')
+                messages.info(request, 'The passwords entered do not match.')
             if User.objects.filter(username=username).exists():
                 verified_profile = False
-                messages.info(request, 'Username taken')
+                messages.info(request, 'Username taken.')
             if User.objects.filter(email=email).exists():
                 verified_profile = False
-                messages.info(request, 'Email taken')
+                messages.info(request, 'Email taken.')
             if verified_profile:
                 user = User.objects.create_user(username=username, password=password, email=email, first_name=full_name)
                 user.save()
-                messages.info(request, 'Profile createad, please log in...')
+                messages.info(request, 'Profile created, please sign in.')
                 return redirect('/login')
             else:
                 return redirect('/registration')

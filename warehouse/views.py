@@ -5,8 +5,7 @@ from django.contrib.auth.models import User, auth
 
 # My warehouse
 def warehouse(request):
-    warehouses = Warehouse.objects.all()
-    return render(request, 'warehouse.html', {'warehouses': warehouses})
+    return render(request, 'warehouse.html')
 
 # Clients
 def client(request):
