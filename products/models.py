@@ -31,6 +31,9 @@ class Packageprice(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     package = models.ForeignKey(Package, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.package.name + ' - ' + self.product.name
+
 class Currency(models.Model):
     # 1 point in sum: e.x: 1 point = 10 000 sum
     money = models.IntegerField(null=True)

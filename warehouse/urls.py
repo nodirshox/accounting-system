@@ -2,8 +2,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Main page
-    path('', views.warehouse, name='warehouse'),
+    # Warehouse
+    path('warehouse/', views.my_warehouse, name='warehouse'),
     path('clients/', views.client, name='clients'),
-    path('new-client/', views.addclient, name='new-client'),
+    path('new_client/', views.add_client, name='new_client'),
+    path('update_client/<int:pk>/', views.update_client, name='update_client'),
+    path('delete_client/<int:pk>/', views.delete_client, name='delete_client'),
 ]

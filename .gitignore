@@ -1,3 +1,4 @@
 media
 account/migrations
 products/migrations
+warehouse/migrations

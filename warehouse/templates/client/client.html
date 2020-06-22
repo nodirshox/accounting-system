@@ -1,5 +1,7 @@
 {% extends 'includes/base.html' %}
 
+{% load static %}
+
 {% block content %}
 
 <h3>Clients</h3>
@@ -22,13 +24,13 @@
             <td>{{client.name}}</td>
             <td>{{client.number}}</td>
             <td>{{client.date|date:'d.m.Y'}}</td>
-            <td><a class="btn btn-sm btn-info" href="">Update</a></td>
-            <td><a class="btn btn-sm btn-danger" href="">Remove</a></td>
+            <td><a class="btn btn-sm btn-info" href="{% url 'update_client' client.id %}">Update</a></td>
+            <td><a class="btn btn-sm btn-danger" href="{% url 'delete_client' client.id %}">Remove</a></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<b>Total - {{ client_count }}</b> | <a href="/warehouse/new-client">Add new client</a>
+<b>Total - {{ client_count }}</b> | <a href="{% url 'new_client' %}">Add new client</a>
 
 
 {% endblock content %}
