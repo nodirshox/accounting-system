@@ -1,30 +1,46 @@
 {% extends 'includes/base.html' %}
+{% load static %}
 
 {% block content %}
 
-<div class="col-md-6">
+<form action="{% url 'login' %}" method="POST" class="form-signin">
+  {% csrf_token %}
 
+  <div class="text-center">
+    <img class="mb-4" src="{% static 'assets/images/favicon.png' %}" alt="logo" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">Sign In</h1>
+  </div>
+  
   {% for message in messages %}
     <div class="alert alert-warning">
       {{ message }}
     </div>
   {% endfor %}
-  
-  <h3>Sign In</h3>
-  <form action="{% url 'login' %}" method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" id="username" name="username" required>
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" name="password" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Sign in</button> 
-  </form>
-  <div><a href="{% url 'registration' %}">Create a new account</a></div>
-  <div><a href="#">Forgot your password?</a></div>
-</div>
+
+  <div class="form-label-group">
+    <label for="inputUsername">Username</label>
+    <input type="text" id="inputUsername" name="username" class="form-control" required autofocus>
+  </div>
+
+  <div class="form-label-group">
+    <label for="inputPassword">Password</label>
+    <input type="password" id="inputPassword" class="form-control" name="password" required>
+  </div>
+
+  <div class="checkbox mb-3">
+    <label>
+      <input type="checkbox" value="remember-me"> Remember me
+    </label>
+  </div>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+  <div class="m-2">
+    <a href="{% url 'registration' %}">Create a new account</a>
+  </div>
+
+  <div class="m-2">
+    <a href="#">Forgot your password?</a>
+  </div>
+</form>
 
 {% endblock content %}

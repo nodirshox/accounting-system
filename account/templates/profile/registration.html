@@ -1,41 +1,44 @@
 {% extends 'includes/base.html' %}
+{% load static %}
 
 {% block content %}
 
-<div class="col-md-6">
-  <h3>Sign Up</h3>
+<form action="{% url 'registration' %}" method="POST" class="form-signin">
+  {% csrf_token %}
 
+  <div class="text-center mb-4">
+    <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+  </div>
+  
   {% for message in messages %}
     <div class="alert alert-warning">
       {{ message }}
     </div>
   {% endfor %}
 
-  <form action="{% url 'registration' %}" method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="full_name">Full name</label>
-      <input type="text" class="form-control" id="full_name" name="full_name" required>
-    </div>
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" id="username" name="username" required>
-    </div>
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" class="form-control" id="email" name="email" required>
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" name="password" required>
-    </div>
-    <div class="form-group">
-      <label for="confirm_password">Confirm Password</label>
-      <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Sign Up</button>
-  </form>
-  <div>Already have an account? <a href="{% url 'login' %}">Sign in here</a></div>
-</div>
+  <div class="form-group">
+    <label for="full_name">Full name</label>
+    <input type="text" class="form-control" id="full_name" name="full_name" required>
+  </div>
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="username" name="username" required>
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" class="form-control" id="email" name="email" required>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="password" name="password" required>
+  </div>
+  <div class="form-group">
+    <label for="confirm_password">Confirm Password</label>
+    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Sign Up</button>
+  <div class="m-2">Already have an account? <a href="{% url 'login' %}">Sign in here</a></div>
+</form>
+
 
 {% endblock content %}
