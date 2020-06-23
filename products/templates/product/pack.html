@@ -1,0 +1,30 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<div class="row p-2">
+    <div class="card col-md-4 m-1">
+        <div class="card-body">
+            <h5>{{ pack.name }}</h5>
+        </div>
+    </div>
+</div>
+
+<table class="table table-bordered table-hover table-responsive-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th>Quantity</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.quantity }}</td>
+            <td>{{ product }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock content %}

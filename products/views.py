@@ -6,22 +6,29 @@ from . models import *
 
 
 # Products
-
 def products(request):
     products = Product.objects.all()
-    return render(request, 'product/products.html', {'products': products})
+    context = { 'products': products }
+
+    return render(request, 'product/products.html', context)
 
 # Packages
-
 def packages(request):
     packages = Package.objects.all()
-    return render(request, 'product/packages.html', {'packages': packages})
+    context = { 'packages': packages }
+
+    return render(request, 'product/packages.html', context)
 
 def package(request, id):
-    one_package = Package.objects.get(id=id)
-    filtered_micropackages = Micropackage.objects.filter(package=id)
-    return render(request, 'product/one_package.html', {'package': one_package, 'micropackages': filtered_micropackages})
+    package = Package.objects.get(id=id)
+    packs = Pack.objects.filter(package=id)
+    context = { 'package': package, 'packs': packs }
 
-def micropackage(request, id):
-    micropackage = Micropackage.objects.get(id=id)
-    return render(request, 'product/micropackage.html', {'micropackage': micropackage})
+    return render(request, 'product/one_package.html', context)
+
+def pack(request, id):
+    pack = Pack.objects.get(id=id)
+    products = Quantity.objects.filter(pack=id)
+    context = { 'pack': pack, 'products': products }
+
+    return render(request, 'product/pack.html', context)

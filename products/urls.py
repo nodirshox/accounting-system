@@ -8,5 +8,5 @@ urlpatterns = [
     # Packages
     path('packages/', views.packages, name='packages'),
     path('packages/<int:id>/', views.package, name='one_package'),
-    path('micropackage/<int:id>/', views.micropackage, name='micropackage')
+    path('pack/<int:id>/', views.pack, name='pack')
 ]

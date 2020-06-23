@@ -11,8 +11,8 @@
 </div>
 
 <ul>
-    {% for micropackage in micropackages %}
-        <li><a href="{% url 'micropackage' micropackage.id %}">{{ micropackage.name }}</a></li>
+    {% for pack in packs %}
+        <li><a href="{% url 'pack' pack.id %}">{{ pack.name }}</a></li>
     {% endfor %}
 </ul>
 
