@@ -1,7 +1,8 @@
 from django.contrib import admin
 from .models import *
-# Register your models here.
 
 admin.site.register(Client)
 admin.site.register(Warehouse)
 admin.site.register(Recourse)
+admin.site.register(Order)
+admin.site.register(Payment)

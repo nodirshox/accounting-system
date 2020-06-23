@@ -3,9 +3,14 @@ from . models import *
 from django.contrib.auth.models import User, auth
 from . forms import ClientForm
 # My warehouse
-def my_warehouse(request):
+def dashboard(request):
     if request.user.is_authenticated:
-        return render(request, 'warehouse.html')
+        warehouse = Warehouse.objects.get(owner=request.user.id)
+        clients = Client.objects.filter(warehouse=warehouse.id)
+        total_clients = clients.count()
+        orders = Order.objects.filter(warehouse=warehouse.id)
+        context = { 'clients': clients, 'total_clients': total_clients, 'cash': warehouse.cash, 'terminal': warehouse.terminal, 'bonus': warehouse.bonus, 'orders': orders }
+        return render(request, 'dashboard.html', context)
     else:
         return redirect('/login')
 # Clients
@@ -21,7 +26,7 @@ def client(request):
         return render(request, 'client/client.html', context)
     else:
         return redirect('/login')
-def add_client(request):
+def create(request):
 
     form = ClientForm()
 
@@ -29,9 +34,9 @@ def add_client(request):
         form = ClientForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/warehouse/clients')
+            return redirect('/warehouse/dashboard')
     context = { 'form': form }    
-    return render(request, 'client/new_client.html', context)
+    return render(request, 'client/create.html', context)
 
 def update_client(request, pk):
     client = Client.objects.get(id=pk)
@@ -44,7 +49,7 @@ def update_client(request, pk):
             return redirect('/warehouse/clients')
     
     context = { 'form': form }
-    return render(request, 'client/new_client.html', context)
+    return render(request, 'client/create.html', context)
 
 def delete_client(request, pk):
     client = Client.objects.get(id=pk)
