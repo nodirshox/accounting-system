@@ -12,7 +12,8 @@ def my_warehouse(request):
 def client(request):
     if request.user.is_authenticated:        
         user = request.user
-        clients = Client.objects.filter(owner=user.id)
+        warehouse = Warehouse.objects.get(owner=user.id)
+        clients = Client.objects.filter(warehouse=warehouse.id)
         client_count = clients.count()
         
         context = { 'clients': clients, 'client_count': client_count }
