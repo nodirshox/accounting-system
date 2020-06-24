@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from . models import *
 from django.contrib.auth.models import User, auth
-from . forms import ClientForm
+from . forms import *
+
 # My warehouse
 def dashboard(request):
     if request.user.is_authenticated:
@@ -13,6 +14,17 @@ def dashboard(request):
         return render(request, 'dashboard.html', context)
     else:
         return redirect('/login')
+
+def create_warehouse(request):
+    form = WarehouseForm()
+
+    if request.method == 'POST':
+        form = ClientForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/warehouse/dashboard')
+    context = { 'form': form }    
+    return render(request, 'create_warehouse.html', context)
 # Clients
 def client(request):
     if request.user.is_authenticated:        
@@ -26,6 +38,7 @@ def client(request):
         return render(request, 'client/client.html', context)
     else:
         return redirect('/login')
+
 def create(request):
 
     form = ClientForm()
@@ -59,3 +72,13 @@ def delete_client(request, pk):
     context = { 'client': client }
     return render(request, 'client/delete_client.html', context)
 
+def create_order(request):
+    form = OrderForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        form = OrderForm()
+
+    context = {
+        'form': form
+    }    
+    return render(request, 'order/create.html', context)

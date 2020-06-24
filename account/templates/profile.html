@@ -12,8 +12,8 @@
 <p>Hello, {{ user.first_name }}</p>
 
 {% if warehouse_count == 0 %}
-  <div class="alert alert-warning">
-    You do not have a warehouse. <a href="create-warehouse">Create warehouse</a>
+  <div class="alert alert-info">
+    You do not have a warehouse. <a href="{% url 'create_warehouse' %}">Create warehouse</a>
   </div>
 {% else %}
   <div>

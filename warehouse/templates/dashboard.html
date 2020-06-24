@@ -49,8 +49,7 @@
     <div class="col-md-5">
         <h5>Clients</h5>
         <div class="card card-body">
-            <a href="{% url 'clients' %}" class="btn btn-primary btn-sm btn-block">All</a>
-            <table class="table table-sm">
+            <table class="table table-sm table-bordered table-hover">
                 <tr>
                     <th>#</th>
                     <th>Name</th>
@@ -66,12 +65,13 @@
                 {% endfor %}
             </table>
             <a href="{% url 'create_client' %}" class="btn btn-primary btn-sm btn-block">Create client</a>
+            <a href="{% url 'clients' %}" class="btn btn-primary btn-sm btn-block">All</a>
         </div>
     </div>
     <div class="col-md-7">
-        <h5>Customers</h5>
+        <h5>Orders</h5>
         <div class="card card-body">
-            <table class="table table-sm">
+            <table class="table table-sm table-bordered table-hover">
                 <tr>
                     <th>Client</th>
                     <th>Product</th>
@@ -87,6 +87,7 @@
                 </tr>
                 {% endfor %}
             </table>
+            <a href="{% url 'create_order' %}" class="btn btn-primary btn-sm btn-block">Create order</a>
         </div>
     </div>
 </div>
