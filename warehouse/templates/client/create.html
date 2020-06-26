@@ -1,18 +1,14 @@
-{% extends 'includes/base.html' %}
-
-{% block content %}
+{% extends 'includes/base.html' %} {% block content %}
 
 <div class="container text-align-center pb-3 pt-3">
     <div class="col-md-6">
-      <h3>New Client</h3>  
-      <form action="" method="POST">
+        <h3>New Client</h3>
+        <form action="" method="POST">
 
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" name="Create">
-      </form>
-      <a href="/warehouse/clients">Back to list</a>
+            {% csrf_token %} {{ form.as_p }}
+            <input type="submit" name="Create">
+        </form>
     </div>
-  </div>
+</div>
 
 {% endblock content %}

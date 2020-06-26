@@ -2,16 +2,21 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth, Group
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login as auth_login
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
+
 from .forms import CreateUserForm
 from warehouse.models import Warehouse
-from .decorators import unaunthenticated_user, allowed_users, admin_only
+from .decorators import unaunthenticated_user, allowed_users
 
-# Main page
+def main(request):
+    return redirect('dashboard')
+
 @login_required(login_url='login')
-def home_page(request):
-    return render(request, 'home_page.html')
+def dashboard(request):
+    context = {}
+    return render(request, 'dashboard.html', context)
 
 # Authentication, Registration, Profile
 @unaunthenticated_user
@@ -24,7 +29,7 @@ def login(request):
         if user is not None:
             auth_login(request, user)
             messages.info(request, 'You have successfully logged in.')
-            return redirect('profile')
+            return redirect('dashboard')
         else:
             messages.info(request, 'Incorrect username or password.')
             
@@ -74,19 +79,3 @@ def logout(request):
     else:
         return redirect('/')
 
-@login_required(login_url='login')
-@admin_only
-def profile(request):
-    context = {}
-    return render(request, 'profile.html', context)
-    """
-    current_user = request.user
-    warehouse = Warehouse.objects.filter(owner=current_user.id)
-    warehouse_count = warehouse.count()
-    context = { 'warehouse': warehouse, 'warehouse_count': warehouse_count }
-
-    if request.user.is_authenticated:
-        return render(request, 'profile.html', context)
-    else:
-        return redirect('/login')
-    """

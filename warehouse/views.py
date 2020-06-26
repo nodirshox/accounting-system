@@ -6,14 +6,17 @@ from . forms import *
 # My warehouse
 def dashboard(request):
     if request.user.is_authenticated:
-        warehouse = Warehouse.objects.get(owner=request.user.id)
-        clients = Client.objects.filter(warehouse=warehouse.id)
-        total_clients = clients.count()
-        orders = Order.objects.filter(warehouse=warehouse.id)
-        context = { 'clients': clients, 'total_clients': total_clients, 'cash': warehouse.cash, 'terminal': warehouse.terminal, 'bonus': warehouse.bonus, 'orders': orders }
-        return render(request, 'dashboard.html', context)
+        try:
+            warehouse = Warehouse.objects.get(user=request.user.id)
+            clients = Client.objects.filter(warehouse=warehouse.id)
+            total_clients = clients.count()
+            orders = Order.objects.filter(warehouse=warehouse.id)
+            context = { 'clients': clients, 'total_clients': total_clients, 'cash': warehouse.cash, 'terminal': warehouse.terminal, 'bonus': warehouse.bonus, 'orders': orders }
+            return render(request, 'dashboard.html', context)
+        except:
+            return redirect('create_warehouse')
     else:
-        return redirect('/login')
+        return redirect('login')
 
 def create_warehouse(request):
     form = WarehouseForm()
@@ -29,7 +32,7 @@ def create_warehouse(request):
 def client(request):
     if request.user.is_authenticated:        
         user = request.user
-        warehouse = Warehouse.objects.get(owner=user.id)
+        warehouse = Warehouse.objects.get(user=user.id)
         clients = Client.objects.filter(warehouse=warehouse.id)
         client_count = clients.count()
         
@@ -47,7 +50,7 @@ def create(request):
         form = ClientForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/warehouse/dashboard')
+            return redirect('dashboard')
     context = { 'form': form }    
     return render(request, 'client/create.html', context)
 
