@@ -14,8 +14,8 @@ class CreateUserForm(UserCreationForm):
         model = User
         fields = ['first_name', 'username', 'email', 'password1', 'password2']
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
             'username': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.TextInput(attrs={'class': 'form-control'})
+            'email': forms.TextInput(attrs={'class': 'form-control', 'required': True})
             
         }

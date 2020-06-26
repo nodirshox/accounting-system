@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from products.models import Product
 
 class Warehouse(models.Model):
-    owner = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    user = models.OneToOneField(User, null=True, on_delete=models.SET_NULL)
     bonus = models.IntegerField(default=0, null=True)
     cash = models.IntegerField(default=0, null=True)
     terminal = models.IntegerField(default=0, null=True)
@@ -11,7 +11,7 @@ class Warehouse(models.Model):
     active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.owner.first_name
+        return self.user.first_name
 
 class Client(models.Model):
     name = models.CharField(max_length=128, null=True)
