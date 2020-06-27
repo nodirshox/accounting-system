@@ -1,4 +1,10 @@
-{% extends 'includes/base.html' %} {% block content %}
+{% extends 'includes/base.html' %} {% block content %} 
+
+{% for message in messages %}
+<div class="alert alert-success">
+    {{ message }}
+</div>
+{% endfor %}
 
 <div class="row mt-3">
     <div class="col-md-4">
@@ -7,7 +13,7 @@
                 <div class="card-title">Orders</div>
             </div>
             <div class="card-body">
-                <h3 class="card-title">?</h3>
+                <h3 class="card-title">0</h3>
             </div>
         </div>
     </div>
@@ -27,7 +33,7 @@
                 <div class="card-title">Payments</div>
             </div>
             <div class="card-body">
-                <h3 class="card-title">?</h3>
+                <h3 class="card-title">0</h3>
             </div>
         </div>
     </div>
