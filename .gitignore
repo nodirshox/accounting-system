@@ -2,3 +2,5 @@ media
 account/migrations
 products/migrations
 warehouse/migrations
+static/plugins
+static/dist
