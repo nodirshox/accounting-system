@@ -3,3 +3,7 @@ static
 account/migrations
 products/migrations
 warehouse/migrations
+account/__pycache__
+products/__pycache__
+warehouse/__pycache__
+controlsystem/__pycache__

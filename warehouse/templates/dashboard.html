@@ -6,7 +6,7 @@
 </div>
 {% endfor %}
 
-<div class="row mt-3">
+<div class="row">
     <div class="col-md-4">
         <div class="card text-center mb-3">
             <div class="card-header">
@@ -53,13 +53,13 @@
                 {% for client in clients %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td><a href="{% url 'update_client' client.id %}">{{ client.name }}</a></td>
+                    <td>{{ client.name }}</td>
                     <td>{{ client.number }}</td>
                 </tr>
                 {% endfor %}
             </table>
             <a href="{% url 'create_client' %}" class="btn btn-primary btn-sm btn-block">Create client</a>
-            <a href="{% url 'clients' %}" class="btn btn-primary btn-sm btn-block">All</a>
+            <a href="{% url 'all_clients' %}" class="btn btn-primary btn-sm btn-block">All</a>
         </div>
     </div>
     <div class="col-md-7">
@@ -69,19 +69,16 @@
                 <tr>
                     <th>Client</th>
                     <th>Product</th>
-                    <th>Update</th>
-                    <th>Delete</th>
                 </tr>
                 {% for order in orders %}
                 <tr>
                     <td>{{ order.client }}</td>
                     <td>{{ order.quantity }} x {{ order.product }}</td>
-                    <td><a href="" class="btn btn-sm btn-info">Update</a></td>
-                    <td><a href="" class="btn btn-sm btn-danger">Delete</a></td>
                 </tr>
                 {% endfor %}
             </table>
             <a href="{% url 'create_order' %}" class="btn btn-primary btn-sm btn-block">Create order</a>
+            <a href="{% url 'all_orders' %}" class="btn btn-primary btn-sm btn-block">All</a>
         </div>
     </div>
 </div>

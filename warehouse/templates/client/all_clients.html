@@ -50,7 +50,7 @@
     </div>
   </div>
 
-<b>Total - {{ client_count }}</b> | <a href="{% url 'create_client' %}">Add new client</a>
+<a href="{% url 'create_client' %}" class="btn btn-warning">Add new client</a> | Total - {{ client_count }}
 
 
 {% endblock content %}

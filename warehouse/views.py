@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
-from . models import *
 from django.contrib.auth.models import User, auth
-from . forms import *
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import *
+from .forms import *
 
 # My warehouse
 def dashboard(request):
@@ -14,22 +15,27 @@ def dashboard(request):
             context = { 'clients': clients, 'total_clients': total_clients, 'cash': warehouse.cash, 'terminal': warehouse.terminal, 'bonus': warehouse.bonus, 'orders': orders }
             return render(request, 'dashboard.html', context)
         except:
+            messages.info(request, 'Please, press button below to create warehouse.')
             return redirect('create_warehouse')
     else:
         return redirect('login')
 
 def create_warehouse(request):
-    form = WarehouseForm()
-
     if request.method == 'POST':
-        form = ClientForm(request.POST)
+        form = WarehouseForm(request.POST or None)
         if form.is_valid():
             form.save()
-            return redirect('/warehouse/dashboard')
-    context = { 'form': form }    
-    return render(request, 'create_warehouse.html', context)
+            return redirect('dashboard')
+        else:
+            return render(request, 'create_warehouse.html')
+    else:
+        initial_data = {
+            'user': request.user
+        }
+        form = WarehouseForm(request.POST or None, initial=initial_data)
+        return render(request, 'create_warehouse.html', {'form': form})
 # Clients
-def client(request):
+def all_clients(request):
     if request.user.is_authenticated:        
         user = request.user
         warehouse = Warehouse.objects.get(user=user.id)
@@ -38,11 +44,11 @@ def client(request):
         
         context = { 'clients': clients, 'client_count': client_count }
 
-        return render(request, 'client/client.html', context)
+        return render(request, 'client/all_clients.html', context)
     else:
         return redirect('/login')
 
-def create(request):
+def create_client(request):
 
     form = ClientForm()
 
@@ -79,9 +85,16 @@ def create_order(request):
     form = OrderForm(request.POST or None)
     if form.is_valid():
         form.save()
-        form = OrderForm()
+        return redirect('orders')
 
     context = {
         'form': form
     }    
     return render(request, 'order/create.html', context)
+
+def all_orders(request):
+    warehouse = Warehouse.objects.get(user=request.user)
+    orders = Order.objects.filter(warehouse=warehouse.id)
+
+    context = { 'orders': orders }
+    return render(request, 'order/all_orders.html', context)

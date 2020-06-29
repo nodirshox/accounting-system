@@ -15,7 +15,7 @@ class Warehouse(models.Model):
 
 class Client(models.Model):
     name = models.CharField(max_length=128, null=True)
-    number = models.CharField(max_length=8, null=True)
+    number = models.CharField(max_length=8,unique=True, null=True)
     warehouse = models.ForeignKey(Warehouse, null=True, on_delete=models.SET_NULL)
     date = models.DateTimeField(auto_now_add=True)
 
