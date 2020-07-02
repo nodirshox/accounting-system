@@ -106,10 +106,10 @@ def create_order(request):
 @login_required(login_url='login')
 def update_order(request, pk):
     order = Order.objects.get(id=pk)
-    form = OrderForm(instance=client)
+    form = OrderForm(instance=order)
 
     if request.method == 'POST':
-        form = OrderForm(request.POST, instance=client)
+        form = OrderForm(request.POST, instance=order)
         if form.is_valid():
             form.save()
             return redirect('all_orders')
