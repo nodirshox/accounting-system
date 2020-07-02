@@ -8,7 +8,7 @@
       <form method="POST" aciton="{% url 'create_order' %}">
         {% csrf_token %}
         {{ form|crispy }}
-        <input type="submit" name="Create" class="btn alert-success">
+        <input type="submit" value="Create" class="btn btn-success">
       </form>
     </div>
   </div>

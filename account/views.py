@@ -10,13 +10,9 @@ from .forms import CreateUserForm
 from warehouse.models import Warehouse
 from .decorators import unaunthenticated_user, allowed_users
 
+@login_required(login_url='login')
 def main(request):
     return redirect('dashboard')
-
-@login_required(login_url='login')
-def dashboard(request):
-    context = {}
-    return render(request, 'dashboard.html', context)
 
 # Authentication, Registration, Profile
 @unaunthenticated_user

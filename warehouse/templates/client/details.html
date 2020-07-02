@@ -38,7 +38,7 @@
                         <td>{{client.name}}</td>
                         <td>{{client.number}}</td>
                         <td>{{client.date|date:'d.m.Y'}}</td>
-                        <td><a class="btn btn-sm btn-info" href="{% url 'update_client' client.id %}">Update</a></td>
+                        <td><a href="{% url 'update_client' client.id %}"><i class="fas fa-pen"></i></a></td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -48,7 +48,7 @@
     </div>
   </div>
 
-<a href="{% url 'create_client' %}" class="btn btn-success">Add new client</a>
+<a href="{% url 'create_client' %}" class="btn btn-success">New client</a>
 
 
 {% endblock content %}

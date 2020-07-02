@@ -3,24 +3,24 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import *
 from .forms import *
+from django.contrib.auth.decorators import login_required
 
 # My warehouse
+@login_required(login_url='login')
 def dashboard(request):
-    if request.user.is_authenticated:
-        try:
-            warehouse = Warehouse.objects.get(user=request.user.id)
-            clients = Client.objects.filter(warehouse=warehouse.id)
-            total_clients = clients.count()
-            orders = Order.objects.filter(warehouse=warehouse.id)
-            total_orders = orders.count()
-            context = { 'clients': clients, 'total_clients': total_clients, 'cash': warehouse.cash, 'terminal': warehouse.terminal, 'bonus': warehouse.bonus, 'orders': orders, 'total_orders': total_orders }
-            return render(request, 'dashboard.html', context)
-        except:
-            messages.info(request, 'Please, press button below to create warehouse.')
-            return redirect('create_warehouse')
-    else:
-        return redirect('login')
+    try:
+        warehouse = Warehouse.objects.get(user=request.user.id)
+        clients = Client.objects.filter(warehouse=warehouse.id)
+        total_clients = clients.count()
+        orders = Order.objects.filter(warehouse=warehouse.id)
+        total_orders = orders.count()
+        context = { 'clients': clients, 'total_clients': total_clients, 'cash': warehouse.cash, 'terminal': warehouse.terminal, 'bonus': warehouse.bonus, 'orders': orders, 'total_orders': total_orders }
+        return render(request, 'dashboard.html', context)
+    except:
+        messages.info(request, 'Please, press button below to create warehouse.')
+        return redirect('create_warehouse')
 
+@login_required(login_url='login')
 def create_warehouse(request):
     try:
         dashboard = Warehouse.objects.get(user=request.user)
@@ -38,25 +38,18 @@ def create_warehouse(request):
             else:
                 return render(request, 'create_dashboard.html')
         else:
-            initial_data = {
-                'user': request.user
-            }
-            form = WarehouseForm(request.POST or None, initial=initial_data)
+            form = WarehouseForm(request.POST or None)
             return render(request, 'create_dashboard.html', {'form': form})
 
 # Clients
+@login_required(login_url='login')
 def all_clients(request):
-    if request.user.is_authenticated:        
-        user = request.user
-        warehouse = Warehouse.objects.get(user=user.id)
-        clients = Client.objects.filter(warehouse=warehouse.id)
-        
-        context = { 'clients': clients }
+    user = request.user
+    warehouse = Warehouse.objects.get(user=user.id)
+    clients = Client.objects.filter(warehouse=warehouse.id)
+    return render(request, 'client/details.html', { 'clients': clients })
 
-        return render(request, 'client/details.html', context)
-    else:
-        return redirect('/login')
-
+@login_required(login_url='login')
 def create_client(request):
     form = ClientForm(request.POST or None)
     if form.is_valid():
@@ -69,6 +62,7 @@ def create_client(request):
     }
     return render(request, 'client/create.html', context)
 
+@login_required(login_url='login')
 def update_client(request, pk):
     client = Client.objects.get(id=pk)
     form = ClientForm(instance=client)
@@ -77,10 +71,11 @@ def update_client(request, pk):
         form = ClientForm(request.POST, instance=client)
         if form.is_valid():
             form.save()
-            return redirect('/warehouse/clients')
+            return redirect('all_clients')
     
     context = { 'form': form }
     return render(request, 'client/create.html', context)
+
 """
 def delete_client(request, pk):
     client = Client.objects.get(id=pk)
@@ -90,27 +85,40 @@ def delete_client(request, pk):
     context = { 'client': client }
     return render(request, 'client/delete_client.html', context)
 """
-
-def create_order(request):
-    form = OrderForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect('all_orders')
-
-    context = {
-        'form': form
-    }    
-    return render(request, 'order/create.html', context)
-
+# Orders
+@login_required(login_url='login')
 def all_orders(request):
     warehouse = Warehouse.objects.get(user=request.user)
     orders = Order.objects.filter(warehouse=warehouse.id)
+    return render(request, 'order/details.html', { 'orders': orders })
 
-    context = { 'orders': orders }
-    return render(request, 'order/all_orders.html', context)
+@login_required(login_url='login')
+def create_order(request):
+    form = OrderForm(request.POST or None)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.warehouse = Warehouse.objects.get(user=request.user)
+        obj.save()
+        return redirect('all_orders')
+
+    return render(request, 'order/create.html', { 'form': form })
+
+@login_required(login_url='login')
+def update_order(request, pk):
+    order = Order.objects.get(id=pk)
+    form = OrderForm(instance=client)
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=client)
+        if form.is_valid():
+            form.save()
+            return redirect('all_orders')
+    
+    return render(request, 'client/create.html', { 'form': form })
+
 
 # Payment
-
+@login_required(login_url='login')
 def all_payments(request):
     payments = Payment.objects.all()
     context = {
@@ -118,6 +126,7 @@ def all_payments(request):
     }
     return render(request, 'payment/details.html', context)
 
+@login_required(login_url='login')
 def create_payment(request):
     form = PaymentForm(request.POST or None)
     if form.is_valid():
@@ -129,6 +138,7 @@ def create_payment(request):
     return render(request, 'payment/create.html', context)
 
 # Recourse
+@login_required(login_url='login')
 def all_recourses(request):
     recourses = Recourse.objects.all()
     context = {
@@ -136,6 +146,7 @@ def all_recourses(request):
     }
     return render(request, 'recourse/details.html', context)
 
+@login_required(login_url='login')
 def create_recourse(request):
     form = RecourceForm(request.POST or None)
     if form.is_valid():
