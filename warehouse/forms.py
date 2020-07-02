@@ -10,17 +10,16 @@ class WarehouseForm(forms.ModelForm):
             'cash',
             'terminal'
         ]
-        widgets = {
-            'user': forms.TextInput(attrs={'hidden': True})
-        }
+
 
 class ClientForm(forms.ModelForm):
+    name = forms.CharField(label='Full name', widget=forms.TextInput(attrs={'autocomplete': 'off'}))
+    number = forms.CharField(label='Client Code', widget=forms.TextInput(attrs={'placeholder': 'UZ123456', 'autocomplete': 'off', 'minlength': 8, 'maxlength': 8, 'oninput': 'this.value = this.value.toUpperCase()'}))
     class Meta:
         model = Client
         fields = [
             'name',
-            'number',
-            'warehouse'
+            'number'
         ]
 
 class OrderForm(forms.ModelForm):

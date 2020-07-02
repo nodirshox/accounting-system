@@ -35,29 +35,30 @@ def create_warehouse(request):
         }
         form = WarehouseForm(request.POST or None, initial=initial_data)
         return render(request, 'create_warehouse.html', {'form': form})
+
 # Clients
 def all_clients(request):
     if request.user.is_authenticated:        
         user = request.user
         warehouse = Warehouse.objects.get(user=user.id)
         clients = Client.objects.filter(warehouse=warehouse.id)
-        client_count = clients.count()
         
-        context = { 'clients': clients, 'client_count': client_count }
+        context = { 'clients': clients }
 
-        return render(request, 'client/all_clients.html', context)
+        return render(request, 'client/details.html', context)
     else:
         return redirect('/login')
 
 def create_client(request):
-    form = ClientForm()
-    if request.method == 'POST':
-        form = ClientForm(request.POST)
-        form.warehouse = request.user
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
-    context = { 'form': form }    
+    form = ClientForm(request.POST or None)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.warehouse = Warehouse.objects.get(user=request.user)
+        obj.save()
+        return redirect('all_clients')
+    context = {
+        'form': form
+    }
     return render(request, 'client/create.html', context)
 
 def update_client(request, pk):

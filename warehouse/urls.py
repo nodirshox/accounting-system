@@ -12,8 +12,8 @@ urlpatterns = [
     path('client/update/<int:pk>/', views.update_client, name='update_client'),
 
     # Order
-    path('order/create/', views.create_order, name='create_order'),
     path('orders/', views.all_orders, name='all_orders'),
+    path('order/create/', views.create_order, name='create_order'),
 
     #Payment
     path('payment/', views.all_payments, name='all_payments'),
