@@ -49,11 +49,10 @@ def all_clients(request):
         return redirect('/login')
 
 def create_client(request):
-
     form = ClientForm()
-
     if request.method == 'POST':
         form = ClientForm(request.POST)
+        form.warehouse = request.user
         if form.is_valid():
             form.save()
             return redirect('dashboard')
@@ -98,3 +97,13 @@ def all_orders(request):
 
     context = { 'orders': orders }
     return render(request, 'order/all_orders.html', context)
+
+def payment(request):
+    form = PaymentForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('dashboard')
+    context = {
+        'form': form
+    }
+    return render(request, 'payment/create.html', context)
