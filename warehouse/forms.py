@@ -4,12 +4,7 @@ from . models import *
 class WarehouseForm(forms.ModelForm):
     class Meta:
         model = Warehouse
-        fields = [
-            'user',
-            'bonus',
-            'cash',
-            'terminal'
-        ]
+        fields = []
 
 
 class ClientForm(forms.ModelForm):

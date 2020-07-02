@@ -22,19 +22,27 @@ def dashboard(request):
         return redirect('login')
 
 def create_warehouse(request):
-    if request.method == 'POST':
-        form = WarehouseForm(request.POST or None)
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
+    try:
+        dashboard = Warehouse.objects.get(user=request.user)
+        messages.info(request, 'You already have a dashboard.')
+        return redirect('dashboard')
+    except:
+        if request.method == 'POST':
+            form = WarehouseForm(request.POST or None)
+            if form.is_valid():
+                obj = form.save(commit=False)
+                obj.user = request.user
+                obj.save()
+                messages.info(request, 'Congratulations, you just created dashboard.')
+                return redirect('dashboard')
+            else:
+                return render(request, 'create_dashboard.html')
         else:
-            return render(request, 'create_warehouse.html')
-    else:
-        initial_data = {
-            'user': request.user
-        }
-        form = WarehouseForm(request.POST or None, initial=initial_data)
-        return render(request, 'create_warehouse.html', {'form': form})
+            initial_data = {
+                'user': request.user
+            }
+            form = WarehouseForm(request.POST or None, initial=initial_data)
+            return render(request, 'create_dashboard.html', {'form': form})
 
 # Clients
 def all_clients(request):
