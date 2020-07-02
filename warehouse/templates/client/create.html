@@ -8,7 +8,8 @@
         <form action="" method="POST">
             {% csrf_token %} 
             {{ form|crispy }}
-            <input type="submit" value="Create" class="btn alert-success">
+            <input type="submit" value="Save" class="btn alert-success">
+            <a href="{% url 'all_clients' %}">Back to list</a>
         </form>
     </div>
 </div>
