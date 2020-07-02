@@ -19,7 +19,8 @@ class ClientForm(forms.ModelForm):
         model = Client
         fields = [
             'name',
-            'number'
+            'number',
+            'warehouse'
         ]
 
 class OrderForm(forms.ModelForm):
@@ -30,4 +31,9 @@ class OrderForm(forms.ModelForm):
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
+        fields = '__all__'
+
+class RecourceForm(forms.ModelForm):
+    class Meta:
+        model = Recourse
         fields = '__all__'

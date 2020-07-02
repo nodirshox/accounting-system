@@ -26,16 +26,7 @@
         {% endif %}
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                {% if request.user.is_staff %}
-                <li class="nav-item">
-                    <a href="/admin" class="nav-link">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <p>
-                            Admin
-                        </p>
-                    </a>
-                </li>
-                {% endif %} {% if user.is_authenticated %}
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a href="{% url 'dashboard' %}" class="nav-link">
                         <i class="fas fa-columns"></i>
@@ -61,18 +52,18 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-clipboard-list"></i>
+                    <a href="{% url 'all_payments' %}" class="nav-link">
+                        <i class="fas fa-dollar-sign"></i>
                         <p>
-                            Products
+                            Payment
                         </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'create_payment' %}" class="nav-link">
-                        <i class="fas fa-dollar-sign"></i>
+                    <a href="{% url 'all_recourses' %}" class="nav-link">
+                        <i class="fas fa-clipboard-list"></i>
                         <p>
-                            Payment
+                            Recources
                         </p>
                     </a>
                 </li>
@@ -110,6 +101,16 @@
                     </a>
                 </li>
                 {% endif %}
+                {% if request.user.is_staff %}
+                <li class="nav-item">
+                    <a href="/admin" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <p>
+                            Admin
+                        </p>
+                    </a>
+                </li>
+                {% endif %} 
             </ul>
         </nav>
     </div>
