@@ -1,0 +1,48 @@
+{% extends 'includes/base.html' %} {% load static %} {% block content %}
+
+
+<div class="row">
+    <div class="col-12">
+      <div class="card p-3">
+        <form action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+            <div class="text-center">
+                <h1 class="h3 mb-3 font-weight-normal text-center">Sign In</h1>
+            </div>
+
+            {% for message in messages %}
+            <div class="alert alert-primary">
+                {{ message }}
+            </div>
+            {% endfor %}
+
+            <div class="form-label-group">
+                <label for="inputUsername">Username</label>
+                <input type="text" id="inputUsername" name="username" class="form-control" required autofocus>
+            </div>
+
+            <div class="form-label-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" id="inputPassword" class="form-control" name="password" required>
+            </div>
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button class="btn btn-lg btn-success btn-block text-center" type="submit">Sign in</button>
+
+            <div class="m-2">
+                <a href="{% url 'registration' %}">Create a new account</a>
+            </div>
+
+            <div class="m-2">
+                <a href="#">Forgot your password?</a>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

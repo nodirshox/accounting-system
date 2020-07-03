@@ -114,7 +114,7 @@ def update_order(request, pk):
             form.save()
             return redirect('all_orders')
     
-    return render(request, 'client/create.html', { 'form': form })
+    return render(request, 'order/create.html', { 'form': form })
 
 
 # Payment
@@ -137,6 +137,20 @@ def create_payment(request):
     }
     return render(request, 'payment/create.html', context)
 
+@login_required(login_url='login')
+def update_payment(request, pk):
+    payment = Payment.objects.get(id=pk)
+    form = PaymentForm(instance=payment)
+
+    if request.method == 'POST':
+        form = PaymentForm(request.POST, instance=payment)
+        if form.is_valid():
+            form.save()
+            return redirect('all_payments')
+    
+    return render(request, 'payment/create.html', { 'form': form })
+
+
 # Recourse
 @login_required(login_url='login')
 def all_recourses(request):
@@ -150,9 +164,9 @@ def all_recourses(request):
 def create_recourse(request):
     form = RecourceForm(request.POST or None)
     if form.is_valid():
-        form.save()
-        return redirect('all_recourses')
-    context = {
-        'form': form
-    }
-    return render(request, 'recourse/create.html', context)
+        obj = form.save(commit=False)
+        obj.warehouse = Warehouse.objects.get(user=request.user)
+        obj.save()
+        return redirect('all_recources')
+
+    return render(request, 'recourse/create.html', { 'form': form })

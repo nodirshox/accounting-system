@@ -39,7 +39,7 @@ class Order(models.Model):
     quantity = models.IntegerField(default=0, null=True)
 
     def __str__(self):
-        return self.product.name + str(self.quantity)
+        return str(self.quantity) + ' x ' + self.product.name
     
 class Payment(models.Model):
     order = models.ForeignKey(Order, null=True, on_delete=models.CASCADE)

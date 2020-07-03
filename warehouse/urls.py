@@ -19,8 +19,9 @@ urlpatterns = [
     #Payment
     path('payment/', views.all_payments, name='all_payments'),
     path('payment/create/', views.create_payment, name='create_payment'),
+    path('payment/update/<int:pk>/', views.update_payment, name='update_payment'),
 
     #Recourses
-    path('recourse/details/', views.all_recourses, name='all_recourses'),
+    path('recourse/details/', views.all_recourses, name='all_recources'),
     path('recource/create/', views.create_recourse, name='create_recourse')
 ]

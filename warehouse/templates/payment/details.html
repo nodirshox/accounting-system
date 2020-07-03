@@ -28,8 +28,9 @@
                 <th>Order</th>
                 <th>Type</th>
                 <th>Amount</th>
+                <th>Date</th>
                 <th>Update</th>
-                <th>Remove</th>
+                <!--<th>Remove</th>-->
               </tr>
             </thead>
             <tbody>
@@ -39,8 +40,9 @@
                         <td>{{ payment.order }}</td>
                         <td>{{ payment.payment }}</td>
                         <td>{{ payment.money }}</td>
-                        <td><a href="#"><i class="fas fa-pen"></i></a></td>
-                        <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+                        <td>{{ payment.date|date:'d.m.Y' }}</td>
+                        <td><a href="{% url 'update_payment' payment.id %}"><i class="fas fa-pen"></i></a></td>
+                        <!--<td><a href="#"><i class="fas fa-trash-alt"></i></a></td>-->
                     </tr>
                 {% endfor %}
             </tbody>
@@ -50,7 +52,7 @@
     </div>
   </div>
 
-<a href="{% url 'create_payment' %}" class="btn btn-success">Add Payment</a>
+<a href="{% url 'create_payment' %}" class="btn btn-success">Add payment</a>
 
 
 {% endblock content %}

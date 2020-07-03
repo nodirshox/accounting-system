@@ -28,11 +28,20 @@ class OrderForm(forms.ModelForm):
         ]
 
 class PaymentForm(forms.ModelForm):
+    money = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))
     class Meta:
         model = Payment
-        fields = '__all__'
+        fields = [
+            'order',
+            'payment',
+            'money'
+        ]
 
 class RecourceForm(forms.ModelForm):
+    quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))
     class Meta:
         model = Recourse
-        fields = '__all__'
+        fields = [
+            'product',
+            'quantity'
+        ]
