@@ -3,16 +3,16 @@
 {% block content %}
 
 {% for message in messages %}
-  <div class="alert alert-info">
+  <div class="alert alert-primary">
       {{ message }}
   </div>
 {% endfor %}
 
 <div class="container p-4 card">
-  <div class="col-md-6">
+  <div class="col">
       <h3>Create Dashboard</h3>
       <form action="{% url 'create_warehouse' %}" method="POST">
-        <p class="text-info">Press button below to create new dashboard</p>
+        <p class="text-muted">Press button below to create new dashboard</p>
         {% csrf_token %}
         {{ form|crispy }}
         <input type="submit" value="Create" class="btn btn-success">
