@@ -75,3 +75,7 @@ def logout(request):
     else:
         return redirect('/')
 
+# 404 Page
+def not_found(request):
+    return render(request, '404.html')
+

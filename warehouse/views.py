@@ -57,24 +57,27 @@ def create_client(request):
         obj.warehouse = Warehouse.objects.get(user=request.user)
         obj.save()
         return redirect('all_clients')
-    context = {
-        'form': form
-    }
-    return render(request, 'client/create.html', context)
+
+    return render(request, 'client/create.html', { 'form': form })
 
 @login_required(login_url='login')
 def update_client(request, pk):
     client = Client.objects.get(id=pk)
-    form = ClientForm(instance=client)
+    user_warehouse = Warehouse.objects.get(user=request.user)
 
-    if request.method == 'POST':
-        form = ClientForm(request.POST, instance=client)
-        if form.is_valid():
-            form.save()
-            return redirect('all_clients')
-    
-    context = { 'form': form }
-    return render(request, 'client/create.html', context)
+    if user_warehouse != client.warehouse:
+        messages.info(request, 'You are not authorized to view this page.')
+        return redirect('404')
+    else:
+        form = ClientForm(instance=client)
+
+        if request.method == 'POST':
+            form = ClientForm(request.POST, instance=client)
+            if form.is_valid():
+                form.save()
+                return redirect('all_clients')
+        
+        return render(request, 'client/create.html', { 'form': form })
 
 """
 def delete_client(request, pk):

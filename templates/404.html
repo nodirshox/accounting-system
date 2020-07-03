@@ -1,0 +1,12 @@
+{% extends 'includes/base.html' %}
+{% block content %}
+
+    <h1 class="text-center">404 - Page not found</h1>
+        {% for message in messages %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+        {% endfor %}
+    <p class="text-center"><a href="/" class="btn btn-info"><i class="fas fa-home"></i> Back to home page</a></p>
+
+{% endblock %}

@@ -17,7 +17,6 @@ class Client(models.Model):
     name = models.CharField(max_length=128, null=True)
     number = models.CharField(max_length=8, null=True)
     warehouse = models.ForeignKey(Warehouse, null=True, on_delete=models.SET_NULL)
-    date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
@@ -37,9 +36,10 @@ class Order(models.Model):
     client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0, null=True)
-
+    date = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self):
-        return str(self.quantity) + ' x ' + self.product.name
+        return self.client.name + ', ' + str(self.quantity) + 'x ' + self.product.name
     
 class Payment(models.Model):
     order = models.ForeignKey(Order, null=True, on_delete=models.CASCADE)

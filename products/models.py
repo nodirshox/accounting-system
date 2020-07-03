@@ -29,7 +29,7 @@ class Quantity(models.Model):
     quantity = models.IntegerField(null=True)
 
     def __str__(self):
-        return self.product.name
+        return self.pack.name + ', ' + self.product.name
 
 class Price(models.Model):
     price = models.IntegerField(null=True)

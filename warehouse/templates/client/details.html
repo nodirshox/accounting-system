@@ -27,7 +27,6 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Number</th>
-                <th>Registration</th>
                 <th>Update</th>
               </tr>
             </thead>
@@ -37,7 +36,6 @@
                         <td>{{ forloop.counter }}</td>
                         <td>{{client.name}}</td>
                         <td>{{client.number}}</td>
-                        <td>{{client.date|date:'d.m.Y'}}</td>
                         <td><a href="{% url 'update_client' client.id %}"><i class="fas fa-pen"></i></a></td>
                     </tr>
                 {% endfor %}
