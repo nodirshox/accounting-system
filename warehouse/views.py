@@ -97,7 +97,8 @@ def all_orders(request):
 
 @login_required(login_url='login')
 def create_order(request):
-    form = OrderForm(request.POST or None)
+    warehouse = Warehouse.objects.get(user=request.user)
+    form = OrderForm(warehouse, request.POST or None)
     if form.is_valid():
         obj = form.save(commit=False)
         obj.warehouse = Warehouse.objects.get(user=request.user)
