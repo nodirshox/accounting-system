@@ -47,7 +47,7 @@ def all_clients(request):
     user = request.user
     warehouse = Warehouse.objects.get(user=user.id)
     clients = Client.objects.filter(warehouse=warehouse.id)
-    return render(request, 'client/details.html', { 'clients': clients })
+    return render(request, 'client/all.html', { 'clients': clients })
 
 @login_required(login_url='login')
 def create_client(request):
@@ -75,9 +75,20 @@ def update_client(request, pk):
             form = ClientForm(request.POST, instance=client)
             if form.is_valid():
                 form.save()
-                return redirect('all_clients')
+                return redirect('client_detail', pk=client.id, )
         
         return render(request, 'client/create.html', { 'form': form })
+
+def client_detail(request, pk):
+    client = Client.objects.get(id=pk)
+    user_warehouse = Warehouse.objects.get(user=request.user)
+
+    if user_warehouse != client.warehouse:
+        messages.info(request, 'You are not authorized to view this page.')
+        return redirect('404')
+    else:
+        orders = Order.objects.filter(client=client)
+        return render(request,'client/detail.html', {'client': client, 'orders': orders})
 
 """
 def delete_client(request, pk):
@@ -109,8 +120,9 @@ def create_order(request):
 
 @login_required(login_url='login')
 def update_order(request, pk):
+    warehouse = Warehouse.objects.get(user=request.user)
     order = Order.objects.get(id=pk)
-    form = OrderForm(instance=order)
+    form = OrderForm(warehouse, instance=order)
 
     if request.method == 'POST':
         form = OrderForm(request.POST, instance=order)

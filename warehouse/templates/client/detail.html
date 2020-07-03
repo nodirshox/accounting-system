@@ -1,0 +1,46 @@
+{% extends 'includes/base.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <p><b>Name:</b> {{ client.name }} <a href="{% url 'update_client' client.id %}"><i class="far fa-edit"></i></a></p>
+                <p><b>Number:</b> {{ client.number }}</p>
+            </div>
+            {% if orders %}
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap table-bordered">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Product</th>
+                      <th>Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for order in orders %}
+                          <tr>
+                              <td>{{ forloop.counter }}</td>
+                              <td>{{ order.quantity }}x {{ order.product }}</td>
+                              <td>{{ order.date|date:'d.m.Y'}}</td>
+                              <td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
+                          </tr>
+                      {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              {% endif %}
+              <div class="m-3">
+                <a href="{% url 'create_order' %}" class="btn btn-success"><i class="fas fa-cart-plus"></i> Add order</a>
+                <a href="{% url 'create_payment' %}" class="btn btn-warning"><i class="fas fa-dollar-sign"></i> Add Payment</a>
+                <a href="{% url 'all_clients' %}" class="btn btn-primary"><i class="fas fa-arrow-alt-circle-left"></i> Back to list</a>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

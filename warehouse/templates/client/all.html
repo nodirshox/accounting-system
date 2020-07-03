@@ -27,16 +27,14 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Number</th>
-                <th>Update</th>
               </tr>
             </thead>
             <tbody>
                 {% for client in clients %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{client.name}}</td>
-                        <td>{{client.number}}</td>
-                        <td><a href="{% url 'update_client' client.id %}"><i class="fas fa-pen"></i></a></td>
+                        <td><a href="{% url 'client_detail' client.id %}">{{ client.name }}</a></td>
+                        <td>{{ client.number }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
