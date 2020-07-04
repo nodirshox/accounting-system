@@ -90,6 +90,21 @@ def client_detail(request, pk):
         orders = Order.objects.filter(client=client)
         return render(request,'client/detail.html', {'client': client, 'orders': orders})
 
+def client_order(request, pk):
+    client = Client.objects.get(id=pk)
+    form = AddOrderClient()
+    if request.method == 'POST':
+        form = AddOrderClient(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.client = client
+            obj.warehouse = client.warehouse
+            obj.save()
+            return redirect('/warehouse/client/detail/' + str(client.id))
+        else:
+            print('hehe')
+
+    return render(request, 'client/order.html', { 'client': client, 'form': form })
 """
 def delete_client(request, pk):
     client = Client.objects.get(id=pk)

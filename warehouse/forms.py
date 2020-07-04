@@ -17,6 +17,12 @@ class ClientForm(forms.ModelForm):
             'number'
         ]
 
+class AddOrderClient(forms.ModelForm):
+    quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))
+    class Meta:
+        model = Order
+        fields = ['product', 'quantity']
+
 class OrderForm(forms.ModelForm):
     quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))
     class Meta: 
@@ -25,6 +31,8 @@ class OrderForm(forms.ModelForm):
     def __init__(self, warehouse, *args, **kwargs):
         super(OrderForm, self).__init__(*args, **kwargs)
         self.fields['client'].queryset = Client.objects.filter(warehouse=warehouse)
+
+
 
 class PaymentForm(forms.ModelForm):
     money = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))

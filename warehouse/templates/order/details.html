@@ -35,7 +35,7 @@
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ order.client }}</td>
-                        <td>{{ order.quantity }}x {{ order.product }}</td>
+                        <td>{{ order.quantity }}x {{ order.product.name }}</td>
                         <td>{{ order.date|date:'d.m.Y'}}</td>
                         <td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
                         <!--<td><a href="#"><i class="fas fa-trash-alt"></i></a></td>-->
