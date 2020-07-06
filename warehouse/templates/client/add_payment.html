@@ -1,0 +1,17 @@
+{% extends 'includes/base.html' %} 
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container p-4 card">
+    <div class="col-12">
+        <h3>Add Payment</h3>
+        <form action="" method="POST">
+            {% csrf_token %} 
+            {{ form|crispy }}
+            <input type="submit" value="Save" class="btn btn-success">
+            <a href="{% url 'all_clients' %}">Back to list</a>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

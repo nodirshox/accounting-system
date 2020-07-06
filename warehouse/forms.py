@@ -23,6 +23,11 @@ class AddOrderClient(forms.ModelForm):
         model = Order
         fields = ['product', 'quantity']
 
+class AddPaymentClient(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = [ 'payment', 'money' ]
+
 class OrderForm(forms.ModelForm):
     quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))
     class Meta: 

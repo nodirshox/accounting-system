@@ -1,0 +1,50 @@
+{% extends 'includes/base.html' %}
+{% load mathfilters %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                Payment
+            </div>
+            {% if payments %}
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap table-bordered">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Product</th>
+                      <th>Type</th>
+                      <th>Price</th>
+                      <th>Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for payment in payments %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ payment.order }}</td>
+                        <td>{{ payment.payment }}</td>
+                        <td>{{ payment.money }}</td>
+                        <td>{{ payment.date|date:'d.m.Y' }}</td>
+                        <td><a href="{% url 'update_payment' payment.id %}"><i class="fas fa-pen"></i></a></td>
+                        <!--<td><a href="#"><i class="fas fa-trash-alt"></i></a></td>-->
+                    </tr>
+                {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              {% endif %}
+              <div class="m-3">
+                <a href="{% url 'client_payment_add' order_id %}" class="btn btn-warning"><i class="fas fa-dollar-sign"></i> Add Payment</a>
+              </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

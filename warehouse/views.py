@@ -105,6 +105,23 @@ def client_order(request, pk):
             print('hehe')
 
     return render(request, 'client/order.html', { 'client': client, 'form': form })
+
+def client_payment(request, pk):
+    payments = Payment.objects.filter(order=pk)
+    return render(request, 'client/payment.html', { 'payments': payments, 'order_id': pk })
+
+def client_payment_add(request, pk):
+    form = AddPaymentClient()
+    if request.method == 'POST':
+        form = AddPaymentClient(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.order = Order.objects.get(id=pk)
+            obj.save()
+            return redirect('/warehouse/client/order/' + str(pk))
+        else:
+            print('hehe')
+    return render(request, 'client/add_payment.html', {'form': form})
 """
 def delete_client(request, pk):
     client = Client.objects.get(id=pk)
@@ -185,11 +202,10 @@ def update_payment(request, pk):
 # Recourse
 @login_required(login_url='login')
 def all_recourses(request):
-    recourses = Recourse.objects.all()
-    context = {
-        'recourses': recourses
-    }
-    return render(request, 'recourse/details.html', context)
+    warehouse = Warehouse.objects.get(user=request.user)
+    recourses = Recourse.objects.filter(warehouse=warehouse)
+
+    return render(request, 'recourse/details.html', { 'recourses': recourses })
 
 @login_required(login_url='login')
 def create_recourse(request):
