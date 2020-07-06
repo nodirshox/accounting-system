@@ -26,8 +26,8 @@
                 <th>Client</th>
                 <th>Product</th>
                 <th>Date</th>
-                <th>Update</th>
-                <!--<th>Delete</th>-->
+                <!--<th>Update</th>
+                <th>Delete</th>-->
               </tr>
             </thead>
             <tbody>
@@ -37,8 +37,8 @@
                         <td>{{ order.client }}</td>
                         <td>{{ order.quantity }}x {{ order.product.name }}</td>
                         <td>{{ order.date|date:'d.m.Y'}}</td>
-                        <td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
-                        <!--<td><a href="#"><i class="fas fa-trash-alt"></i></a></td>-->
+                        <!--<td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
+                        <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>-->
                     </tr>
                 {% endfor %}
             </tbody>
@@ -47,8 +47,5 @@
       </div>
     </div>
   </div>
-
-<a href="{% url 'create_order' %}" class="btn btn-success">New order</a>
-
 
 {% endblock content %}

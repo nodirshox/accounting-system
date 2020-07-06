@@ -36,6 +36,8 @@
                   </tbody>
                 </table>
               </div>
+              {% else %}
+              <p class="text-secondary text-center">No orders</p>
               {% endif %}
               <div class="m-3">
                 <a href="{% url 'client_order' client.id %}" class="btn btn-success"><i class="fas fa-cart-plus"></i> Add order</a>

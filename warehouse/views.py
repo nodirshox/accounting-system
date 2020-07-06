@@ -77,8 +77,9 @@ def update_client(request, pk):
                 form.save()
                 return redirect('client_detail', pk=client.id, )
         
-        return render(request, 'client/create.html', { 'form': form })
+        return render(request, 'client/update_client.html', { 'form': form, 'client_id': pk })
 
+@login_required(login_url='login')
 def client_detail(request, pk):
     client = Client.objects.get(id=pk)
     user_warehouse = Warehouse.objects.get(user=request.user)
@@ -90,6 +91,7 @@ def client_detail(request, pk):
         orders = Order.objects.filter(client=client)
         return render(request,'client/detail.html', {'client': client, 'orders': orders})
 
+@login_required(login_url='login')
 def client_order(request, pk):
     client = Client.objects.get(id=pk)
     form = AddOrderClient()
@@ -101,15 +103,16 @@ def client_order(request, pk):
             obj.warehouse = client.warehouse
             obj.save()
             return redirect('/warehouse/client/detail/' + str(client.id))
-        else:
-            print('hehe')
+
 
     return render(request, 'client/order.html', { 'client': client, 'form': form })
 
+@login_required(login_url='login')
 def client_payment(request, pk):
     payments = Payment.objects.filter(order=pk)
     return render(request, 'client/payment.html', { 'payments': payments, 'order_id': pk })
 
+@login_required(login_url='login')
 def client_payment_add(request, pk):
     form = AddPaymentClient()
     if request.method == 'POST':
@@ -119,9 +122,8 @@ def client_payment_add(request, pk):
             obj.order = Order.objects.get(id=pk)
             obj.save()
             return redirect('/warehouse/client/order/' + str(pk))
-        else:
-            print('hehe')
-    return render(request, 'client/add_payment.html', {'form': form})
+
+    return render(request, 'client/add_payment.html', {'form': form, 'order_id': pk})
 """
 def delete_client(request, pk):
     client = Client.objects.get(id=pk)
