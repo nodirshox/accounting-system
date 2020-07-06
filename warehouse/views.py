@@ -4,7 +4,7 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
-
+from .filters import ClientFilter
 # My warehouse
 @login_required(login_url='login')
 def dashboard(request):
@@ -47,7 +47,11 @@ def all_clients(request):
     user = request.user
     warehouse = Warehouse.objects.get(user=user.id)
     clients = Client.objects.filter(warehouse=warehouse.id)
-    return render(request, 'client/all.html', { 'clients': clients })
+
+    myFilter = ClientFilter(request.GET, queryset=clients)
+    clients = myFilter.qs
+
+    return render(request, 'client/all.html', { 'clients': clients, 'myFilter': myFilter })
 
 @login_required(login_url='login')
 def create_client(request):

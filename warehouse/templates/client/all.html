@@ -11,12 +11,11 @@
           <h3 class="card-title">Clients</h3>
 
           <div class="card-tools">
-            <div class="input-group input-group-sm" style="width: 150px;">
-              <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-              <div class="input-group-append">
-                <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-              </div>
+            <div id="example1_filter" class="dataTables_filter">
+              <form method="GET">
+                {{ myFilter.form }}
+                  <button type="submit" class="btn btn-default btn-sm"><i class="fas fa-search"></i></button>
+              </form>
             </div>
           </div>
         </div>
