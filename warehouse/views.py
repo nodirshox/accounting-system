@@ -1,11 +1,12 @@
 from django.contrib.auth.models import User, auth
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import *
-from .forms import *
 from django.contrib.auth.decorators import login_required
 from .filters import ClientFilter
-# My warehouse
+from .models import *
+from .forms import *
+
+# Dashboard
 @login_required(login_url='login')
 def dashboard(request):
     try:
@@ -14,8 +15,8 @@ def dashboard(request):
         total_clients = clients.count()
         orders = Order.objects.filter(warehouse=warehouse.id)
         total_orders = orders.count()
-        context = { 'clients': clients, 'total_clients': total_clients, 'cash': warehouse.cash, 'terminal': warehouse.terminal, 'bonus': warehouse.bonus, 'orders': orders, 'total_orders': total_orders }
-        return render(request, 'dashboard.html', context)
+        context = { 'total_clients': total_clients, 'total_orders': total_orders }
+        return render(request, 'dashboard/main.html', context)
     except:
         messages.info(request, 'Please, press button below to create warehouse.')
         return redirect('create_warehouse')
@@ -39,7 +40,7 @@ def create_warehouse(request):
                 return render(request, 'create_dashboard.html')
         else:
             form = WarehouseForm(request.POST or None)
-            return render(request, 'create_dashboard.html', {'form': form})
+            return render(request, 'dashboard/create.html', {'form': form})
 
 # Clients
 @login_required(login_url='login')
@@ -175,10 +176,7 @@ def update_order(request, pk):
 @login_required(login_url='login')
 def all_payments(request):
     payments = Payment.objects.all()
-    context = {
-        'payments': payments
-    }
-    return render(request, 'payment/details.html', context)
+    return render(request, 'payment/details.html', { 'payments': payments })
 
 @login_required(login_url='login')
 def create_payment(request):
@@ -223,3 +221,20 @@ def create_recourse(request):
         return redirect('all_recources')
 
     return render(request, 'recourse/create.html', { 'form': form })
+
+
+@login_required(login_url='login')
+def update_recourse(request, pk):
+    recourse = Recourse.objects.get(id=pk)
+    form = RecourceForm(instance=recourse)
+    if request.method == 'POST':
+        form = RecourceForm(request.POST or None)
+        if form.is_valid():
+            #obj = form.save(commit=False)
+            #obj.warehouse = Warehouse.objects.get(user=request.user)
+            #obj.product = recourse.product
+            #obj.save()
+            form.save()
+            return redirect('all_recources')
+
+    return render(request, 'recourse/update.html', {'form': form})

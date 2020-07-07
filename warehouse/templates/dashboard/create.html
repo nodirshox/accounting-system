@@ -12,10 +12,10 @@
   <div class="col">
       <h3>Create Dashboard</h3>
       <form action="{% url 'create_warehouse' %}" method="POST">
-        <p class="text-muted">Press button below to create new dashboard</p>
-        {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="Create" class="btn btn-success">
+          <p class="text-muted">Press button below to create new dashboard</p>
+          {% csrf_token %}
+          {{ form|crispy }}
+          <button type="submit" class="btn btn-success"><i class="fas fa-plus fa-ms"></i> Create</button>
       </form>
   </div>
 </div>

@@ -9,16 +9,6 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Recources</h3>
-
-          <div class="card-tools">
-            <div class="input-group input-group-sm" style="width: 150px;">
-              <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-              <div class="input-group-append">
-                <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-              </div>
-            </div>
-          </div>
         </div>
         <div class="card-body table-responsive p-0">
           <table class="table table-hover text-nowrap">
@@ -39,7 +29,7 @@
                         <td>{{ recourse.product }}</td>
                         <td>{{ recourse.quantity }}</td>
                         <td>{{ recourse.date|date:'d.m.Y' }}</td>
-                        <td><a href="#"><i class="fas fa-pen"></i></a></td>
+                        <td><a href="{% url 'update_recourse' recourse.id %}"><i class="fas fa-pen"></i></a></td>
                         <!--<td><a class="btn btn-sm btn-danger" href="#">Remove</a></td>-->
                     </tr>
                 {% endfor %}
@@ -50,7 +40,7 @@
     </div>
   </div>
 
-<a href="{% url 'create_recourse' %}" class="btn btn-success">Add recource</a>
+<a href="{% url 'create_recourse' %}" class="btn btn-success"><i class="fas fa-plus fa-xs"></i> Add recource</a>
 
 
 {% endblock content %}

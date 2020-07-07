@@ -27,5 +27,6 @@ urlpatterns = [
 
     #Recourses
     path('recourse/details/', views.all_recourses, name='all_recources'),
-    path('recource/create/', views.create_recourse, name='create_recourse')
+    path('recource/create/', views.create_recourse, name='create_recourse'),
+    path('recource/update/<int:pk>/', views.update_recourse, name='update_recourse')
 ]

@@ -4,11 +4,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
-
 from .forms import CreateUserForm
-from warehouse.models import Warehouse
 from .decorators import unaunthenticated_user, allowed_users
+from warehouse.models import Warehouse
 
 @login_required(login_url='login')
 def main(request):

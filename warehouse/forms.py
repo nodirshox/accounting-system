@@ -57,3 +57,9 @@ class RecourceForm(forms.ModelForm):
             'product',
             'quantity'
         ]
+
+class UpdateRecourceForm(forms.ModelForm):
+    quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))
+    class Meta:
+        model = Recourse
+        fields = ['quantity']
