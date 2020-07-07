@@ -11,7 +11,13 @@
                 Payment
                 <div><b>Product:</b> {{ order.quantity }}x {{ order.product }}</div>
                 <div><b>Total price:</b> {{ order.quantity|mul:order.product.cost|intcomma }} so'm</div>
-                <div><b>Status:</b> {{ status }}</div>
+                <div>
+                  <b>Status:</b> 
+                  {% if status == 'Not paid' %} <span class="text-danger font-weight-bold">{{ status }}</span> 
+                  {% elif status == 'Paid' %} <span class="text-success font-weight-bold">{{ status }}</span>
+                  {% elif status == 'Over paid' %} <span class="text-primary font-weight-bold">{{ status }}</span>
+                  {% endif %}
+                </div>
                 {% if difference > 0 %}
                   <div><b>Difference:</b> {{ difference|intcomma }} so'm</div>
                 {% endif %}
@@ -48,12 +54,14 @@
               {% else %}
                 <p class="text-secondary text-center">No purchases</p>
               {% endif %}
-              <div class="card-header">
-                <div><b>Total paid:</b> {{ total_paid|intcomma }} so'm</div>
-              </div>
+              {% if total_paid > 0 %}
+                <div class="card-header">
+                  <div><b>Total paid:</b> {{ total_paid|intcomma }} so'm</div>
+                </div>
+              {% endif %}
               <div class="m-3">
                 <a href="{% url 'client_payment_add' order.id %}" class="btn btn-success"><i class="fas fa-dollar-sign"></i> Add Payment</a>
-                <a href="#" class="btn btn-primary"><i class="fas fa-arrow-alt-circle-left"></i> Back to orders</a>
+                <a href="{% url 'all_clients' %}" class="btn btn-primary"><i class="fas fa-arrow-alt-circle-left"></i> Back to clients</a>
               </div>
         </div>
     </div>

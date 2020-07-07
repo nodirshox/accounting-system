@@ -114,8 +114,6 @@ def client_order(request, pk):
 @login_required(login_url='login')
 def client_payment(request, pk):
     currency = Currency.objects.get(id=1)
-    #print(currency.rate)
-    
     
     payments = Payment.objects.filter(order=pk)
     total_paid = 0
@@ -128,8 +126,6 @@ def client_payment(request, pk):
     order = Order.objects.get(id=pk)
     total_cost = order.product.cost * order.quantity
     
-    
-    
     status = None
     difference = 0
     if total_paid == total_cost:
@@ -138,11 +134,11 @@ def client_payment(request, pk):
         status = 'Over paid'
         difference = total_paid - total_cost
     else:
-        status = 'No fully paid'
+        status = 'Not paid'
         difference = total_cost - total_paid
 
-
-    return render(request, 'client/payment.html', { 'payments': payments, 'order': order, 'total_paid': total_paid, 'status': status, 'difference': difference })
+    context = { 'payments': payments, 'order': order, 'total_paid': total_paid, 'status': status, 'difference': difference }
+    return render(request, 'client/payment.html', context)
 
 @login_required(login_url='login')
 def client_payment_add(request, pk):
