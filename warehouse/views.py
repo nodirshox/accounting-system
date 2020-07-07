@@ -2,10 +2,12 @@ from django.contrib.auth.models import User, auth
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from .filters import ClientFilter
 from .models import *
 from .forms import *
 from account.models import Currency
+
 
 # Dashboard
 @login_required(login_url='login')
@@ -166,7 +168,10 @@ def delete_client(request, pk):
 def all_orders(request):
     warehouse = Warehouse.objects.get(user=request.user)
     orders = Order.objects.filter(warehouse=warehouse.id)
-    return render(request, 'order/details.html', { 'orders': orders })
+    paginator = Paginator(orders, 5)
+    page_number  = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'order/details.html', {'page_obj': page_obj})
 
 @login_required(login_url='login')
 def create_order(request):

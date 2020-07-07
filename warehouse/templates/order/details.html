@@ -14,7 +14,6 @@
           <table class="table table-hover text-nowrap">
             <thead>
               <tr>
-                <th>#</th>
                 <th>Client</th>
                 <th>Product</th>
                 <th>Date</th>
@@ -23,10 +22,9 @@
               </tr>
             </thead>
             <tbody>
-                {% for order in orders %}
+                {% for order in page_obj %}
                     <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ order.client }}</td>
+                        <td><a href="{% url 'client_payment' order.id %}">{{ order.client }}</a></td>
                         <td>{{ order.quantity }}x {{ order.product.name }}</td>
                         <td>{{ order.date|date:'d.m.Y'}}</td>
                         <!--<td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
@@ -36,6 +34,25 @@
             </tbody>
           </table>
         </div>
+        <div class="card-footer clearfix">
+          <ul class="pagination pagination-sm m-0 float-right">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a href="?page=1" class="page-link">&laquo; First</a></li>
+            <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">Previous</a></li>
+            {% endif %}
+
+            <li class="page-item">
+                <span class="page-link">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            </li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">Next</a></li>
+                <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">Last &raquo;</a></li>
+            {% endif %}
+          </ul>
+        </div>
+
+
       </div>
     </div>
   </div>
