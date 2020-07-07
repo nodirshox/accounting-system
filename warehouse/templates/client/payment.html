@@ -9,6 +9,12 @@
         <div class="card">
             <div class="card-header">
                 Payment
+                <div><b>Product:</b> {{ order.quantity }}x {{ order.product }}</div>
+                <div><b>Total price:</b> {{ order.quantity|mul:order.product.cost|intcomma }} so'm</div>
+                <div><b>Status:</b> {{ status }}</div>
+                {% if difference > 0 %}
+                  <div><b>Difference:</b> {{ difference|intcomma }} so'm</div>
+                {% endif %}
             </div>
             {% if payments %}
             <div class="card-body table-responsive p-0">
@@ -21,6 +27,7 @@
                       <th>Amount</th>
                       <th>Date</th>
                       <th>Action</th>
+                      <th>Delete</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -32,7 +39,7 @@
                         <td>{{ payment.money }}</td>
                         <td>{{ payment.date|date:'d.m.Y' }}</td>
                         <td><a href="{% url 'update_payment' payment.id %}"><i class="fas fa-pen"></i></a></td>
-                        <!--<td><a href="#"><i class="fas fa-trash-alt"></i></a></td>-->
+                        <td><a href="{% url 'delete_payment' payment.id %}"><i class="fas fa-trash-alt"></i></a></td>
                     </tr>
                 {% endfor %}
                   </tbody>
@@ -41,8 +48,11 @@
               {% else %}
                 <p class="text-secondary text-center">No purchases</p>
               {% endif %}
+              <div class="card-header">
+                <div><b>Total paid:</b> {{ total_paid|intcomma }} so'm</div>
+              </div>
               <div class="m-3">
-                <a href="{% url 'client_payment_add' order_id %}" class="btn btn-success"><i class="fas fa-dollar-sign"></i> Add Payment</a>
+                <a href="{% url 'client_payment_add' order.id %}" class="btn btn-success"><i class="fas fa-dollar-sign"></i> Add Payment</a>
                 <a href="#" class="btn btn-primary"><i class="fas fa-arrow-alt-circle-left"></i> Back to orders</a>
               </div>
         </div>

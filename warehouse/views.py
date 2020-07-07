@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .filters import ClientFilter
 from .models import *
 from .forms import *
+from account.models import Currency
 
 # Dashboard
 @login_required(login_url='login')
@@ -112,8 +113,36 @@ def client_order(request, pk):
 
 @login_required(login_url='login')
 def client_payment(request, pk):
+    currency = Currency.objects.get(id=1)
+    #print(currency.rate)
+    
+    
     payments = Payment.objects.filter(order=pk)
-    return render(request, 'client/payment.html', { 'payments': payments, 'order_id': pk })
+    total_paid = 0
+    for payment in payments:
+        if payment.payment == 'bonus':
+            total_paid += payment.money * currency.rate
+        else:
+            total_paid += payment.money
+
+    order = Order.objects.get(id=pk)
+    total_cost = order.product.cost * order.quantity
+    
+    
+    
+    status = None
+    difference = 0
+    if total_paid == total_cost:
+        status = 'Paid'
+    elif total_paid > total_cost:
+        status = 'Over paid'
+        difference = total_paid - total_cost
+    else:
+        status = 'No fully paid'
+        difference = total_cost - total_paid
+
+
+    return render(request, 'client/payment.html', { 'payments': payments, 'order': order, 'total_paid': total_paid, 'status': status, 'difference': difference })
 
 @login_required(login_url='login')
 def client_payment_add(request, pk):
@@ -200,6 +229,11 @@ def update_payment(request, pk):
     
     return render(request, 'payment/create.html', { 'form': form })
 
+@login_required(login_url='login')
+def delete_payment(request, pk):
+    payment = Payment.objects.get(id=pk)
+    payment.delete()
+    return redirect('/warehouse/client/order/' + str(payment.order.id))
 
 # Recourse
 @login_required(login_url='login')
