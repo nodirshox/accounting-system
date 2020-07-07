@@ -25,8 +25,8 @@ urlpatterns = [
     path('payment/create/', views.create_payment, name='create_payment'),
     path('payment/update/<int:pk>/', views.update_payment, name='update_payment'),
 
-    #Recourses
-    path('recourse/details/', views.all_recourses, name='all_recources'),
-    path('recource/create/', views.create_recourse, name='create_recourse'),
-    path('recource/update/<int:pk>/', views.update_recourse, name='update_recourse')
+    #Resource
+    path('resourse/details/', views.all_resources, name='all_resources'),
+    path('resourse/create/', views.create_resource, name='create_resource'),
+    path('resourse/update/<int:pk>/', views.update_resource, name='update_resource')
 ]

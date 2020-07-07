@@ -38,9 +38,11 @@
                   </tbody>
                 </table>
               </div>
+              {% else %}
+                <p class="text-secondary text-center">No purchases</p>
               {% endif %}
               <div class="m-3">
-                <a href="{% url 'client_payment_add' order_id %}" class="btn btn-warning"><i class="fas fa-dollar-sign"></i> Add Payment</a>
+                <a href="{% url 'client_payment_add' order_id %}" class="btn btn-success"><i class="fas fa-dollar-sign"></i> Add Payment</a>
                 <a href="#" class="btn btn-primary"><i class="fas fa-arrow-alt-circle-left"></i> Back to orders</a>
               </div>
         </div>

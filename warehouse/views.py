@@ -36,8 +36,6 @@ def create_warehouse(request):
                 obj.save()
                 messages.info(request, 'Congratulations, you just created dashboard.')
                 return redirect('dashboard')
-            else:
-                return render(request, 'create_dashboard.html')
         else:
             form = WarehouseForm(request.POST or None)
             return render(request, 'dashboard/create.html', {'form': form})
@@ -45,8 +43,7 @@ def create_warehouse(request):
 # Clients
 @login_required(login_url='login')
 def all_clients(request):
-    user = request.user
-    warehouse = Warehouse.objects.get(user=user.id)
+    warehouse = Warehouse.objects.get(user=request.user.id)
     clients = Client.objects.filter(warehouse=warehouse.id)
 
     myFilter = ClientFilter(request.GET, queryset=clients)
@@ -61,6 +58,7 @@ def create_client(request):
         obj = form.save(commit=False)
         obj.warehouse = Warehouse.objects.get(user=request.user)
         obj.save()
+        messages.info(request, 'Client successfully created.')
         return redirect('all_clients')
 
     return render(request, 'client/create.html', { 'form': form })
@@ -205,36 +203,36 @@ def update_payment(request, pk):
 
 # Recourse
 @login_required(login_url='login')
-def all_recourses(request):
+def all_resources(request):
     warehouse = Warehouse.objects.get(user=request.user)
-    recourses = Recourse.objects.filter(warehouse=warehouse)
+    resources = Resource.objects.filter(warehouse=warehouse)
 
-    return render(request, 'recourse/details.html', { 'recourses': recourses })
+    return render(request, 'resource/details.html', { 'resources': resources })
 
 @login_required(login_url='login')
-def create_recourse(request):
-    form = RecourceForm(request.POST or None)
+def create_resource(request):
+    form = ResourceForm(request.POST or None)
     if form.is_valid():
         obj = form.save(commit=False)
         obj.warehouse = Warehouse.objects.get(user=request.user)
         obj.save()
-        return redirect('all_recources')
+        return redirect('all_resources')
 
-    return render(request, 'recourse/create.html', { 'form': form })
+    return render(request, 'resource/create.html', { 'form': form })
 
 
 @login_required(login_url='login')
-def update_recourse(request, pk):
-    recourse = Recourse.objects.get(id=pk)
-    form = RecourceForm(instance=recourse)
+def update_resource(request, pk):
+    recourse = Resource.objects.get(id=pk)
+    form = ResourceForm(instance=recourse)
     if request.method == 'POST':
-        form = RecourceForm(request.POST or None)
+        form = ResourceForm(request.POST or None)
         if form.is_valid():
             #obj = form.save(commit=False)
             #obj.warehouse = Warehouse.objects.get(user=request.user)
             #obj.product = recourse.product
             #obj.save()
             form.save()
-            return redirect('all_recources')
+            return redirect('all_resources')
 
-    return render(request, 'recourse/update.html', {'form': form})
+    return render(request, 'resource/update.html', {'form': form})

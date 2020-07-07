@@ -8,9 +8,10 @@
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Recources</h3>
+          <h3 class="card-title">Resources</h3>
         </div>
         <div class="card-body table-responsive p-0">
+          {% if resources %}
           <table class="table table-hover text-nowrap">
             <thead>
               <tr>
@@ -23,24 +24,27 @@
               </tr>
             </thead>
             <tbody>
-                {% for recourse in recourses %}
+                {% for resource in resources %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ recourse.product }}</td>
-                        <td>{{ recourse.quantity }}</td>
-                        <td>{{ recourse.date|date:'d.m.Y' }}</td>
-                        <td><a href="{% url 'update_recourse' recourse.id %}"><i class="fas fa-pen"></i></a></td>
+                        <td>{{ resource.product }}</td>
+                        <td>{{ resource.quantity }}</td>
+                        <td>{{ resource.date|date:'d.m.Y' }}</td>
+                        <td><a href="{% url 'update_resource' resource.id %}"><i class="fas fa-pen"></i></a></td>
                         <!--<td><a class="btn btn-sm btn-danger" href="#">Remove</a></td>-->
                     </tr>
                 {% endfor %}
             </tbody>
           </table>
+          {% else %}
+            <p class="text-secondary text-center">No resources</p>
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
 
-<a href="{% url 'create_recourse' %}" class="btn btn-success"><i class="fas fa-plus fa-xs"></i> Add recource</a>
+<a href="{% url 'create_resource' %}" class="btn btn-success"><i class="fas fa-plus fa-xs"></i> Add resourse</a>
 
 
 {% endblock content %}

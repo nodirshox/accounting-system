@@ -21,7 +21,7 @@ class Client(models.Model):
     def __str__(self):
         return self.name
 
-class Recourse(models.Model):
+class Resource(models.Model):
     quantity = models.IntegerField(default=0, null=True)
     warehouse = models.ForeignKey(Warehouse, null=True, on_delete=models.SET_NULL)
     product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE)

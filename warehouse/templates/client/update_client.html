@@ -9,7 +9,7 @@
             {% csrf_token %} 
             {{ form|crispy }}
             <input type="submit" value="Save" class="btn btn-success">
-            <a href="{% url 'client_detail' client_id  %}">Back to list</a>
+            <a href="{% url 'client_detail' client_id  %}">Back to client</a>
         </form>
     </div>
 </div>

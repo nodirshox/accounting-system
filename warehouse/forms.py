@@ -49,17 +49,17 @@ class PaymentForm(forms.ModelForm):
             'money'
         ]
 
-class RecourceForm(forms.ModelForm):
+class ResourceForm(forms.ModelForm):
     quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))
     class Meta:
-        model = Recourse
+        model = Resource
         fields = [
             'product',
             'quantity'
         ]
 
-class UpdateRecourceForm(forms.ModelForm):
+class UpdateResourceForm(forms.ModelForm):
     quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))
     class Meta:
-        model = Recourse
+        model = Resource
         fields = ['quantity']
