@@ -25,7 +25,7 @@
             <tbody>
                 {% for order in page_obj %}
                     <tr>
-                      <td>{{ page_obj.number|mul:number_items|addition:forloop.counter|sub:number_items }}</td>
+                      <td>{{ page_obj.number|mul:ITEMS_PER_PAGE|addition:forloop.counter|sub:ITEMS_PER_PAGE }}</td>
                       <td><a href="{% url 'client_payment' order.id %}">{{ order.client }}</a></td>
                       <td>{{ order.quantity }}x {{ order.product.name }}</td>
                       <td>{{ order.date|date:'d.m.Y'}}</td>

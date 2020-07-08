@@ -8,6 +8,7 @@ from .models import *
 from .forms import *
 from account.models import Currency
 
+ITEMS_PER_PAGE = 10
 
 # Dashboard
 @login_required(login_url='login')
@@ -95,7 +96,7 @@ def client_detail(request, pk):
         messages.info(request, 'You are not authorized to view this page.')
         return redirect('404')
     else:
-        orders = Order.objects.filter(client=client)
+        orders = Order.objects.filter(client=client).order_by('-date')
         return render(request,'client/detail.html', {'client': client, 'orders': orders})
 
 @login_required(login_url='login')
@@ -168,12 +169,14 @@ def delete_client(request, pk):
 @login_required(login_url='login')
 def all_orders(request):
     warehouse = Warehouse.objects.get(user=request.user)
-    orders = Order.objects.filter(warehouse=warehouse.id)
-    number_items = 2
-    paginator = Paginator(orders, number_items)
+    orders = Order.objects.filter(warehouse=warehouse.id).order_by('-date')
+    
+    paginator = Paginator(orders, ITEMS_PER_PAGE)
     page_number  = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'order/details.html', {'page_obj': page_obj, 'number_items': number_items})
+
+    context = { 'page_obj': page_obj, 'ITEMS_PER_PAGE': ITEMS_PER_PAGE }
+    return render(request, 'order/details.html', context)
 
 @login_required(login_url='login')
 def create_order(request):
@@ -242,9 +245,16 @@ def delete_payment(request, pk):
 @login_required(login_url='login')
 def all_resources(request):
     warehouse = Warehouse.objects.get(user=request.user)
-    resources = Resource.objects.filter(warehouse=warehouse)
+    resources = Resource.objects.filter(warehouse=warehouse).order_by('-date')
+    
 
-    return render(request, 'resource/details.html', { 'resources': resources })
+    paginator = Paginator(resources, ITEMS_PER_PAGE)
+    page_number  = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = { 'page_obj': page_obj, 'ITEMS_PER_PAGE': ITEMS_PER_PAGE, 'resources': resources }
+    return render(request, 'resource/details.html', context)
+
 
 @login_required(login_url='login')
 def create_resource(request):
@@ -253,6 +263,7 @@ def create_resource(request):
         obj = form.save(commit=False)
         obj.warehouse = Warehouse.objects.get(user=request.user)
         obj.save()
+        messages.info(request, "Resources added successfully.")
         return redirect('all_resources')
 
     return render(request, 'resource/create.html', { 'form': form })
@@ -265,11 +276,10 @@ def update_resource(request, pk):
     if request.method == 'POST':
         form = ResourceForm(request.POST or None)
         if form.is_valid():
-            #obj = form.save(commit=False)
-            #obj.warehouse = Warehouse.objects.get(user=request.user)
-            #obj.product = recourse.product
-            #obj.save()
-            form.save()
+            obj= form.save(commit= False)
+            obj.save()
             return redirect('all_resources')
+        else:
+            print('a')
 
     return render(request, 'resource/update.html', {'form': form})
