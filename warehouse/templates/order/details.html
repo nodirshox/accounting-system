@@ -1,5 +1,5 @@
 {% extends 'includes/base.html' %}
-
+{% load mathfilters %}
 {% load static %}
 
 {% block content %}
@@ -14,6 +14,7 @@
           <table class="table table-hover text-nowrap">
             <thead>
               <tr>
+                <th>#</th>
                 <th>Client</th>
                 <th>Product</th>
                 <th>Date</th>
@@ -24,11 +25,12 @@
             <tbody>
                 {% for order in page_obj %}
                     <tr>
-                        <td><a href="{% url 'client_payment' order.id %}">{{ order.client }}</a></td>
-                        <td>{{ order.quantity }}x {{ order.product.name }}</td>
-                        <td>{{ order.date|date:'d.m.Y'}}</td>
-                        <!--<td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
-                        <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>-->
+                      <td>{{ page_obj.number|mul:number_items|addition:forloop.counter|sub:number_items }}</td>
+                      <td><a href="{% url 'client_payment' order.id %}">{{ order.client }}</a></td>
+                      <td>{{ order.quantity }}x {{ order.product.name }}</td>
+                      <td>{{ order.date|date:'d.m.Y'}}</td>
+                      <!--<td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
+                      <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>-->
                     </tr>
                 {% endfor %}
             </tbody>

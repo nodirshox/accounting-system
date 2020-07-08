@@ -1,5 +1,5 @@
 {% extends 'includes/base.html' %}
-
+{% load humanize %}
 {% block content %}
 
 <div class="row p-2">
@@ -9,7 +9,7 @@
           <img class="card-img-top product-img" src="{{ product.image.url }}" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">{{ product.name }}</h5>
-            <p class="card-text"><i>{{ product.cost }} so'm</i><br />{{ product.description }} </p>
+            <p class="card-text"><i>{{ product.cost|intcomma }} so'm</i><br />{{ product.description }} </p>
           </div>
       </div>
     {% endfor %}

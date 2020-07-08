@@ -81,6 +81,7 @@ def update_client(request, pk):
             form = ClientForm(request.POST, instance=client)
             if form.is_valid():
                 form.save()
+                messages.info(request, 'Client successfully updated.')
                 return redirect('client_detail', pk=client.id, )
         
         return render(request, 'client/update_client.html', { 'form': form, 'client_id': pk })
@@ -168,10 +169,11 @@ def delete_client(request, pk):
 def all_orders(request):
     warehouse = Warehouse.objects.get(user=request.user)
     orders = Order.objects.filter(warehouse=warehouse.id)
-    paginator = Paginator(orders, 5)
+    number_items = 2
+    paginator = Paginator(orders, number_items)
     page_number  = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'order/details.html', {'page_obj': page_obj})
+    return render(request, 'order/details.html', {'page_obj': page_obj, 'number_items': number_items})
 
 @login_required(login_url='login')
 def create_order(request):

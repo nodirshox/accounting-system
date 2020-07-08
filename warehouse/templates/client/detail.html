@@ -4,6 +4,12 @@
 
 {% block content %}
 
+{% for message in messages %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
 <div class="row">
     <div class="col-12">
         <div class="card">
