@@ -1,57 +1,54 @@
 {% extends 'includes/base.html' %}
 {% load mathfilters %}
 {% load humanize %}
-
 {% block content %}
 
 {% for message in messages %}
-    <div class="alert alert-success">
-        {{ message }}
-    </div>
+  <div class="alert alert-success">{{ message }}</div>
 {% endfor %}
 
 <div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <p><b>Name:</b> {{ client.name }} <a href="{% url 'update_client' client.id %}"><i class="far fa-edit"></i></a></p>
-                <p><b>Number:</b> {{ client.number }}</p>
-            </div>
-            {% if orders %}
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap table-bordered">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Product</th>
-                      <th>Price</th>
-                      <th>Date</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for order in orders %}
-                          <tr>
-                              <td>{{ forloop.counter }}</td>
-                              <td><a href="{% url 'client_payment' order.id %}">{{ order.quantity }}x {{ order.product }}</a></td>
-                              <td>{{ order.quantity|mul:order.product.cost|intcomma }} som</td>
-                              <td>{{ order.date|date:'d.m.Y'}}</td>
-                              <td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
-                          </tr>
-                      {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-              {% else %}
-                <p class="text-secondary text-center">No orders</p>
-              {% endif %}
-              <div class="m-3">
-                <a href="{% url 'client_order' client.id %}" class="btn btn-success"><i class="fas fa-cart-plus fa-xs"></i> Add order</a>
-                <a href="{% url 'all_clients' %}" class="btn btn-primary"><i class="fas fa-arrow-alt-circle-left fa-xs"></i> Back to list</a>
-              </div>
-        </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <p><b>Name:</b> {{ client.name }} <a href="{% url 'update_client' client.id %}"><i class="far fa-edit"></i></a></p>
+        <p><b>Number:</b> {{ client.number }}</p>
+        <p><b>Registration date:</b> {{ client.date|date:'d.m.Y' }}</p>
+      </div>
+      {% if orders %}
+      <div class="card-body table-responsive p-0">
+        <table class="table table-hover text-nowrap table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Product</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td><a href="{% url 'client_payment' order.id %}">{{ order.quantity }}x {{ order.product }}</a></td>
+              <td>Paid | Not Paid</td>
+              <td>{{ order.date|date:'d.m.Y'}}</td>
+              <td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="text-secondary text-center m-2">No orders</div>
+      {% endif %}
+      <div class="m-3">
+        <a href="{% url 'client_order' client.id %}" class="btn btn-primary"><i class="fas fa-cart-plus fa-xs"></i> Add order</a>
+        <a href="{% url 'all_clients' %}" class="btn btn-light"><i class="fas fa-arrow-alt-circle-left fa-xs"></i> Back</a>
+      </div>
     </div>
+  </div>
 </div>
-
 
 {% endblock %}

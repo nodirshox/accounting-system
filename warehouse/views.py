@@ -48,7 +48,7 @@ def create_warehouse(request):
 @login_required(login_url='login')
 def all_clients(request):
     warehouse = Warehouse.objects.get(user=request.user.id)
-    clients = Client.objects.filter(warehouse=warehouse.id)
+    clients = Client.objects.filter(warehouse=warehouse.id).order_by('-date')
 
     myFilter = ClientFilter(request.GET, queryset=clients)
     clients = myFilter.qs
@@ -82,15 +82,13 @@ def update_client(request, pk):
         return redirect('404')
     else:
         form = ClientForm(instance=client)
-
         if request.method == 'POST':
             form = ClientForm(request.POST, instance=client)
             if form.is_valid():
                 form.save()
                 messages.info(request, 'Client successfully updated.')
                 return redirect('client_detail', pk=client.id, )
-        
-        return render(request, 'client/update_client.html', { 'form': form, 'client_id': pk })
+        return render(request, 'client/update.html', { 'form': form, 'client_id': pk })
 
 @login_required(login_url='login')
 def client_detail(request, pk):
@@ -102,7 +100,7 @@ def client_detail(request, pk):
         return redirect('404')
     else:
         orders = Order.objects.filter(client=client).order_by('-date')
-        return render(request,'client/detail.html', {'client': client, 'orders': orders})
+        return render(request,'client/detail.html', { 'client': client, 'orders': orders })
 
 @login_required(login_url='login')
 def client_order(request, pk):

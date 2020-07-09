@@ -4,12 +4,12 @@
 
 <div class="container p-4 card">
     <div class="col-12">
-        <h3>Update Client</h3>
+        <h3>Update</h3>
         <form action="" method="POST">
             {% csrf_token %} 
             {{ form|crispy }}
-            <input type="submit" value="Save" class="btn btn-success">
-            <a href="{% url 'client_detail' client_id  %}">Back to client</a>
+            <input type="submit" value="Save" class="btn btn-primary">
+            <a href="{% url 'client_detail' client_id  %}" class="btn btn-light">Back</a>
         </form>
     </div>
 </div>
