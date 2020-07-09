@@ -29,5 +29,6 @@ urlpatterns = [
     #Resource
     path('resourse/details/', views.all_resources, name='all_resources'),
     path('resourse/create/', views.create_resource, name='create_resource'),
-    path('resourse/update/<int:pk>/', views.update_resource, name='update_resource')
+    path('resourse/update/<int:pk>/', views.update_resource, name='update_resource'),
+    path('resource/delete/<int:pk>/', views.delete_resource, name='delete_resource')
 ]

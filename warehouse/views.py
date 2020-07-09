@@ -271,15 +271,29 @@ def create_resource(request):
 
 @login_required(login_url='login')
 def update_resource(request, pk):
-    recourse = Resource.objects.get(id=pk)
-    form = ResourceForm(instance=recourse)
+    resource = Resource.objects.get(id=pk)
     if request.method == 'POST':
-        form = ResourceForm(request.POST or None)
-        if form.is_valid():
-            obj= form.save(commit= False)
-            obj.save()
+        if request.POST.get('quantity').isnumeric():
+            resource.quantity = request.POST.get('quantity')
+            resource.save()
+            messages.info(request, 'Resource successfully updated.')
             return redirect('all_resources')
         else:
-            print('a')
+            messages.info(request, 'Please enter only positive number.')
+            return redirect('all_resources')
 
-    return render(request, 'resource/update.html', {'form': form})
+    return render(request, 'resource/update.html', { 'quantity': resource.quantity })
+
+@login_required(login_url='login')
+def delete_resource(request, pk):
+    resource = Resource.objects.get(id=pk)
+    if resource.warehouse == Warehouse.objects.get(user=request.user):
+        if request.method == 'POST':
+            resource.delete()
+            messages.info(request, 'Resources deleted successfully.')
+            return redirect('all_resources')
+    else:
+        messages.info(request, 'You are not authorized to view this page.')
+        return redirect('404')
+
+    return render(request, 'resource/delete.html', {'resource': resource})

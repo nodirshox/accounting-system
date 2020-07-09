@@ -34,7 +34,7 @@
                       <td>{{ resource.quantity }}</td>
                       <td>{{ resource.date|date:'d.m.Y' }}</td>
                       <td><a href="{% url 'update_resource' resource.id %}"><i class="fas fa-pen"></i></a></td>
-                      <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>
+                      <td><a href="{% url 'delete_resource' resource.id %}"><i class="fas fa-trash-alt"></i></a></td>
                     </tr>
                 {% endfor %}
             </tbody>

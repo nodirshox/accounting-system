@@ -8,7 +8,10 @@
         <h3>Update Resource</h3>
         <form action="." method="POST">
             {% csrf_token %}
-            {{ form|crispy }}
+            <div class="form-group">
+                <label>Quantity</label>
+                <input type="number" name="quantity" class="form-control" value="{{ quantity }}" min="1" required>
+            </div>
             <input type="submit" value="Save" class="btn btn-success">
             <a href="{% url 'all_resources' %}">Back to list</a>
         </form>

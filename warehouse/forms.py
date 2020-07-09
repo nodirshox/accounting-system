@@ -57,9 +57,3 @@ class ResourceForm(forms.ModelForm):
             'product',
             'quantity'
         ]
-
-class UpdateResourceForm(forms.ModelForm):
-    quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))
-    class Meta:
-        model = Resource
-        fields = ['quantity']
