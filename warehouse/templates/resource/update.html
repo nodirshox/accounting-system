@@ -1,19 +1,22 @@
 {% extends 'includes/base.html' %}
 {% load crispy_forms_tags %}
-
 {% block content %}
 
 <div class="container p-4 card">
     <div class="col-md-6">
-        <h3>Update Resource</h3>
+        <h3>Update</h3>
         <form action="." method="POST">
             {% csrf_token %}
             <div class="form-group">
-                <label>Quantity</label>
-                <input type="number" name="quantity" class="form-control" value="{{ quantity }}" min="1" required>
+                <label>Product</label>
+                <input type="text" class="form-control" value="{{ resource.product }}" disabled>
             </div>
-            <input type="submit" value="Save" class="btn btn-success">
-            <a href="{% url 'all_resources' %}">Back to list</a>
+            <div class="form-group">
+                <label>Quantity</label>
+                <input type="number" name="quantity" class="form-control" value="{{ resource.quantity }}" min="1" required>
+            </div>
+            <input type="submit" value="Save" class="btn btn-primary">
+            <a href="{% url 'all_resources' %}" class="btn btn-light">Back to list</a>
         </form>
     </div>
 </div>

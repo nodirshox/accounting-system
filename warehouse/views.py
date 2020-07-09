@@ -53,7 +53,12 @@ def all_clients(request):
     myFilter = ClientFilter(request.GET, queryset=clients)
     clients = myFilter.qs
 
-    return render(request, 'client/all.html', { 'clients': clients, 'myFilter': myFilter })
+    paginator = Paginator(clients, ITEMS_PER_PAGE)
+    page_number  = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = { 'page_obj': page_obj, 'ITEMS_PER_PAGE': ITEMS_PER_PAGE, 'myFilter': myFilter, 'clients': clients }
+    return render(request, 'client/all_clients.html', context)
 
 @login_required(login_url='login')
 def create_client(request):
@@ -156,15 +161,7 @@ def client_payment_add(request, pk):
             return redirect('/warehouse/client/order/' + str(pk))
 
     return render(request, 'client/add_payment.html', {'form': form, 'order_id': pk})
-"""
-def delete_client(request, pk):
-    client = Client.objects.get(id=pk)
-    if request.method == 'POST':
-        client.delete()
-        return redirect('/warehouse/clients')
-    context = { 'client': client }
-    return render(request, 'client/delete_client.html', context)
-"""
+
 # Orders
 @login_required(login_url='login')
 def all_orders(request):
@@ -246,7 +243,6 @@ def delete_payment(request, pk):
 def all_resources(request):
     warehouse = Warehouse.objects.get(user=request.user)
     resources = Resource.objects.filter(warehouse=warehouse).order_by('-date')
-    
 
     paginator = Paginator(resources, ITEMS_PER_PAGE)
     page_number  = request.GET.get('page')
@@ -282,7 +278,7 @@ def update_resource(request, pk):
             messages.info(request, 'Please enter only positive number.')
             return redirect('all_resources')
 
-    return render(request, 'resource/update.html', { 'quantity': resource.quantity })
+    return render(request, 'resource/update.html', { 'resource': resource })
 
 @login_required(login_url='login')
 def delete_resource(request, pk):

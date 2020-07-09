@@ -1,16 +1,23 @@
 {% extends 'includes/base.html' %}
 {% load crispy_forms_tags %}
-
 {% block content %}
 
 <div class="container p-4 card">
     <div class="col-md-6">
-        <h3>Delete Resource</h3>
-        <p>Are you sure delete this resource:  <span class="text-primary font-weight-bold">x{{ resource.quantity }} {{ resource.product }}</span></p>
+        <h3>Delete</h3>
+        <p>Are you sure delete this resource?</p>
         <form action="." method="POST">
             {% csrf_token %}
+            <div class="form-group">
+                <label>Product</label>
+                <input type="text" class="form-control" value="{{ resource.product }}" disabled>
+            </div>
+            <div class="form-group">
+                <label>Quantity</label>
+                <input type="number" class="form-control" value="{{ resource.quantity }}" disabled>
+            </div>
             <input type="submit" value="Delete" class="btn btn-danger">
-            <a href="{% url 'all_resources' %}">Back</a>
+            <a href="{% url 'all_resources' %}" class="btn btn-light">Back</a>
         </form>
     </div>
 </div>
