@@ -8,8 +8,8 @@
     <form aciton="." method="POST">
       {% csrf_token %}
       {{ form|crispy }}
-      <input type="submit" value="Add" class="btn btn-primary">
-      <a href="{% url 'client_detail' client.id %}" class="btn btn-light">Back</a>
+      <input type="submit" value="Save" class="btn btn-primary">
+      <a href="#" class="btn btn-light">Back</a>
     </form>
   </div>
 </div>

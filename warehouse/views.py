@@ -8,7 +8,7 @@ from .models import *
 from .forms import *
 from account.models import Currency
 
-ITEMS_PER_PAGE = 10
+ITEMS_PER_PAGE = 5
 
 # Dashboard
 @login_required(login_url='login')
@@ -100,65 +100,15 @@ def client_detail(request, pk):
         return redirect('404')
     else:
         orders = Order.objects.filter(client=client).order_by('-date')
-        return render(request,'client/detail.html', { 'client': client, 'orders': orders })
+        myFilter = ClientFilter(request.GET, queryset=orders)
+        clients = myFilter.qs
 
-@login_required(login_url='login')
-def client_order(request, pk):
-    client = Client.objects.get(id=pk)
-    form = AddOrderClient()
-    if request.method == 'POST':
-        form = AddOrderClient(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.client = client
-            obj.warehouse = client.warehouse
-            obj.save()
-            return redirect('/warehouse/client/detail/' + str(client.id))
-
-
-    return render(request, 'client/order.html', { 'client': client, 'form': form })
-
-@login_required(login_url='login')
-def client_payment(request, pk):
-    currency = Currency.objects.get(id=1)
+        paginator = Paginator(clients, ITEMS_PER_PAGE)
+        page_number  = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
     
-    payments = Payment.objects.filter(order=pk)
-    total_paid = 0
-    for payment in payments:
-        if payment.payment == 'bonus':
-            total_paid += payment.money * currency.rate
-        else:
-            total_paid += payment.money
-
-    order = Order.objects.get(id=pk)
-    total_cost = order.product.cost * order.quantity
-    
-    status = None
-    difference = 0
-    if total_paid == total_cost:
-        status = 'Paid'
-    elif total_paid > total_cost:
-        status = 'Over paid'
-        difference = total_paid - total_cost
-    else:
-        status = 'Not paid'
-        difference = total_cost - total_paid
-
-    context = { 'payments': payments, 'order': order, 'total_paid': total_paid, 'status': status, 'difference': difference }
-    return render(request, 'client/payment.html', context)
-
-@login_required(login_url='login')
-def client_payment_add(request, pk):
-    form = AddPaymentClient()
-    if request.method == 'POST':
-        form = AddPaymentClient(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.order = Order.objects.get(id=pk)
-            obj.save()
-            return redirect('/warehouse/client/order/' + str(pk))
-
-    return render(request, 'client/add_payment.html', {'form': form, 'order_id': pk})
+        context = { 'page_obj': page_obj, 'ITEMS_PER_PAGE': ITEMS_PER_PAGE, 'myFilter': myFilter, 'client': client, 'orders': orders }
+        return render(request,'client/detail.html', context)
 
 # Orders
 @login_required(login_url='login')
@@ -174,17 +124,21 @@ def all_orders(request):
     return render(request, 'order/details.html', context)
 
 @login_required(login_url='login')
-def create_order(request):
-    warehouse = Warehouse.objects.get(user=request.user)
-    form = OrderForm(warehouse, request.POST or None)
-    if form.is_valid():
-        obj = form.save(commit=False)
-        obj.warehouse = Warehouse.objects.get(user=request.user)
-        obj.save()
-        return redirect('all_orders')
+def create_order(request, pk):
+    client = Client.objects.get(id=pk)
+    form = AddOrderClient()
+    if request.method == 'POST':
+        form = AddOrderClient(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.client = client
+            obj.warehouse = client.warehouse
+            obj.save()
+            return redirect('/warehouse/client/detail/' + str(client.id))
 
-    return render(request, 'order/create.html', { 'form': form })
+    return render(request, 'order/create.html', { 'client': client, 'form': form })
 
+# Fix this
 @login_required(login_url='login')
 def update_order(request, pk):
     warehouse = Warehouse.objects.get(user=request.user)
@@ -197,7 +151,7 @@ def update_order(request, pk):
             form.save()
             return redirect('all_orders')
     
-    return render(request, 'order/create.html', { 'form': form })
+    return render(request, 'order/update.html', { 'form': form })
 
 
 # Payment
@@ -207,15 +161,47 @@ def all_payments(request):
     return render(request, 'payment/details.html', { 'payments': payments })
 
 @login_required(login_url='login')
-def create_payment(request):
-    form = PaymentForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect('all_payments')
-    context = {
-        'form': form
-    }
-    return render(request, 'payment/create.html', context)
+def client_payment(request, pk):
+    currency = Currency.objects.get(id=1)
+    
+    payments = Payment.objects.filter(order=pk).order_by('-date')
+    total_paid = 0
+    for payment in payments:
+        if payment.payment == 'bonus':
+            total_paid += payment.money * currency.rate
+        else:
+            total_paid += payment.money
+    order = Order.objects.get(id=pk)
+    total_cost = order.product.cost * order.quantity
+    
+    status = None
+    difference = 0
+    if total_paid == total_cost:
+        status = 'Paid'
+    elif total_paid > total_cost:
+        status = 'Over paid'
+        difference = total_paid - total_cost
+    else:
+        status = 'Not paid'
+        difference = total_cost - total_paid
+
+    context = { 'payments': payments, 'order': order, 'total_paid': total_paid, 'status': status, 'difference': difference }
+    return render(request, 'payment/order_payment.html', context)
+
+@login_required(login_url='login')
+def create_payment(request, pk):
+    form = AddPaymentClient()
+    if request.method == 'POST':
+        form = AddPaymentClient(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.order = Order.objects.get(id=pk)
+            obj.save()
+            messages.info(request, "Payment successfully added.")
+            return redirect('/warehouse/payment/order/' + str(pk))
+
+    return render(request, 'payment/create.html', {'form': form, 'order_id': pk})
+
 
 @login_required(login_url='login')
 def update_payment(request, pk):
@@ -234,7 +220,7 @@ def update_payment(request, pk):
 def delete_payment(request, pk):
     payment = Payment.objects.get(id=pk)
     payment.delete()
-    return redirect('/warehouse/client/order/' + str(payment.order.id))
+    return redirect('/warehouse/payment/order/' + str(payment.order.id))
 
 # Recourse
 @login_required(login_url='login')

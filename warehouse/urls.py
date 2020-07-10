@@ -11,18 +11,17 @@ urlpatterns = [
     path('client/create/', views.create_client, name='create_client'),
     path('client/update/<int:pk>/', views.update_client, name='update_client'),
     path('client/detail/<int:pk>/', views.client_detail, name='client_detail'),
-    path('client/order/<int:pk>/', views.client_payment, name='client_payment'),
-    path('client/order/payment/<int:pk>/', views.client_payment_add, name='client_payment_add'),
 
     # Order
     path('order/', views.all_orders, name='all_orders'),
-    path('order/create/', views.create_order, name='create_order'),
-    path('order/create/<int:pk>/', views.client_order, name='client_order'),
+    path('order/create/<int:pk>/', views.create_order, name='create_order'),
     path('order/update/<int:pk>/', views.update_order, name='update_order'),
 
     #Payment
     path('payment/', views.all_payments, name='all_payments'),
-    path('payment/create/', views.create_payment, name='create_payment'),
+    path('payment/order/<int:pk>/', views.client_payment, name='client_payment'),
+    path('payment/order/create/<int:pk>/', views.create_payment, name='create_payment'),
+
     path('payment/update/<int:pk>/', views.update_payment, name='update_payment'),
     path('payment/delete/<int:pk>/', views.delete_payment, name='delete_payment'),
 

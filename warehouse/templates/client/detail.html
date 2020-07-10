@@ -13,7 +13,7 @@
       <div class="card-header">
         <p><b>Name:</b> {{ client.name }} <a href="{% url 'update_client' client.id %}"><i class="far fa-edit"></i></a></p>
         <p><b>Number:</b> {{ client.number }}</p>
-        <p><b>Registration date:</b> {{ client.date|date:'d.m.Y' }}</p>
+        <p><b>Registration date:</b> {{ client.date|date:'H:i, d.m.Y' }}</p>
       </div>
       {% if orders %}
       <div class="card-body table-responsive p-0">
@@ -28,24 +28,37 @@
             </tr>
           </thead>
           <tbody>
-            {% for order in orders %}
+            {% for order in page_obj %}
             <tr>
               <td>{{ forloop.counter }}</td>
               <td><a href="{% url 'client_payment' order.id %}">{{ order.quantity }}x {{ order.product }}</a></td>
               <td>Paid | Not Paid</td>
-              <td>{{ order.date|date:'d.m.Y'}}</td>
+              <td>{{ order.date|date:'H:i, d.m.Y'}}</td>
               <td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
+      <div class="card-footer clearfix">
+        <ul class="pagination pagination-sm m-0 float-right">
+          {% if page_obj.has_previous %}
+          <li class="page-item"><a href="?page=1" class="page-link"><i class="fas fa-angle-double-left fa-xs"></i></a></li>
+          <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link"><i class="fas fa-chevron-left fa-xs"></i></a></li>
+          {% endif %}
+          <li class="page-item"><span class="page-link">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+          {% if page_obj.has_next %}
+          <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link"><i class="fas fa-chevron-right fa-xs"></i></a></li>
+          <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link"><i class="fas fa-angle-double-right fa-xs"></i></a></li>
+          {% endif %}
+        </ul>
+      </div>
       {% else %}
       <div class="text-secondary text-center m-2">No orders</div>
       {% endif %}
       <div class="m-3">
-        <a href="{% url 'client_order' client.id %}" class="btn btn-primary"><i class="fas fa-cart-plus fa-xs"></i> Add order</a>
-        <a href="{% url 'all_clients' %}" class="btn btn-light"><i class="fas fa-arrow-alt-circle-left fa-xs"></i> Back</a>
+        <a href="{% url 'create_order' client.id %}" class="btn btn-primary"><i class="fas fa-cart-plus fa-xs"></i> Add order</a>
+        <a href="{% url 'all_clients' %}" class="btn btn-light"><i class="fas fa-chevron-circle-left fa-xs"></i> Back</a>
       </div>
     </div>
   </div>

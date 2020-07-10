@@ -7,6 +7,6 @@
             {{ message }}
         </div>
         {% endfor %}
-    <p class="text-center"><a href="/" class="btn btn-info"><i class="fas fa-home"></i> Back to home page</a></p>
+    <p class="text-center"><a href="{% url 'dashboard' %}" class="btn btn-primary"><i class="fas fa-home"></i> Back to dashboard</a></p>
 
 {% endblock %}
