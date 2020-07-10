@@ -7,6 +7,7 @@ from .filters import ClientFilter
 from .models import *
 from .forms import *
 from account.models import Currency
+from products.models import Pack
 
 ITEMS_PER_PAGE = 5
 
@@ -123,6 +124,7 @@ def all_orders(request):
     context = { 'page_obj': page_obj, 'ITEMS_PER_PAGE': ITEMS_PER_PAGE }
     return render(request, 'order/details.html', context)
 
+"""
 @login_required(login_url='login')
 def create_order(request, pk):
     client = Client.objects.get(id=pk)
@@ -137,7 +139,13 @@ def create_order(request, pk):
             return redirect('/warehouse/client/detail/' + str(client.id))
 
     return render(request, 'order/create.html', { 'client': client, 'form': form })
-
+"""
+@login_required(login_url='login')
+def create_order(request, pk):
+    client = Client.objects.get(id=pk)
+    products = Product.objects.all()
+    pack = Pack.objects.all()
+    return render(request, 'order/test.html', { 'products': products, 'pack': pack, 'client': client })
 # Fix this
 @login_required(login_url='login')
 def update_order(request, pk):
