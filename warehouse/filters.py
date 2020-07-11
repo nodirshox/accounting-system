@@ -8,4 +8,4 @@ class ClientFilter(django_filters.FilterSet):
     class Meta:
         model = Client
         fields = '__all__'
-        exclude = ['warehouse']
+        exclude = ['warehouse', 'date']

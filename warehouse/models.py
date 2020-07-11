@@ -35,12 +35,14 @@ class Resource(models.Model):
 class Order(models.Model):
     warehouse = models.ForeignKey(Warehouse, null=True, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE)
+    product = models.CharField(max_length=256, default=0)
+    price = models.BigIntegerField(default=0)
     quantity = models.IntegerField(default=0, null=True)
+    detail = models.TextField(default=0)
     date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return str(self.quantity) + 'x ' + self.product.name
+        return self.product
     
 class Payment(models.Model):
     order = models.ForeignKey(Order, null=True, on_delete=models.CASCADE)

@@ -142,10 +142,20 @@ def create_order(request, pk):
 """
 @login_required(login_url='login')
 def create_order(request, pk):
-    client = Client.objects.get(id=pk)
     products = Product.objects.all()
     pack = Pack.objects.all()
+    client = Client.objects.get(id=pk)
+
+    if request.method == 'POST':
+        product_id = request.POST['product']
+        quantity = request.POST['quantity']
+
+        product = Product.objects.get(id=product_id)
+        my_data = Order(client=client, product=product.name, price=product.cost * int(quantity), quantity=quantity, detail=quantity + 'x, ' + product.name + ', ' + str(product.cost))
+        my_data.save()
+
     return render(request, 'order/test.html', { 'products': products, 'pack': pack, 'client': client })
+
 # Fix this
 @login_required(login_url='login')
 def update_order(request, pk):
