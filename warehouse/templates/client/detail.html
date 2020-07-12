@@ -24,17 +24,19 @@
               <th>Product</th>
               <th>Status</th>
               <th>Date</th>
-              <th>Action</th>
+              <th>Update</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
             {% for order in page_obj %}
             <tr>
               <td>{{ forloop.counter }}</td>
-              <td><a href="{% url 'client_payment' order.id %}">{{ order.quantity }}x {{ order.product }}</a></td>
+              <td><a href="{% url 'client_payment' order.id %}">{{ order.product }} - {{ order.quantity }}</a></td>
               <td>Paid | Not Paid</td>
               <td>{{ order.date|date:'H:i, d.m.Y'}}</td>
-              <td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
+              <td><center><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen fa-xs"></i></a></center></td>
+              <td><center><a href="{% url 'deactivate_order' order.id %}"><i class="fas fa-trash-alt fa-xs"></i></center></td>
             </tr>
             {% endfor %}
           </tbody>

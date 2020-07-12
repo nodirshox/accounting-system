@@ -16,6 +16,8 @@ urlpatterns = [
     path('order/', views.all_orders, name='all_orders'),
     path('order/<int:pk>/create/', views.create_order, name='create_order'),
     path('order/<int:pk>/update/', views.update_order, name='update_order'),
+    path('order/<int:pk>/deactivate/', views.deactivate_order, name="deactivate_order"),
+    path('order/archived/', views.archived_orders, name="archived_orders"),
 
     #Payment
     path('payment/', views.all_payments, name='all_payments'),

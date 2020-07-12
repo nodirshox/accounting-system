@@ -1,0 +1,22 @@
+{% extends 'includes/base.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block content %}
+
+<div class="container p-4 card">
+    <div class="col-md-6">
+        <h3>Delete</h3>
+        <p>Are you sure delete this payment?</p>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Payment</label>
+                <input type="text" class="form-control" value="{{ payment.money|intcomma }} - {{ payment.payment }}" disabled>
+            </div>
+            <input type="submit" value="Delete" class="btn btn-danger">
+            <a href="{% url 'client_payment' payment.order.id %}" class="btn btn-light">Back</a>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

@@ -38,6 +38,7 @@ class Order(models.Model):
     price = models.BigIntegerField(default=0)
     quantity = models.IntegerField(default=0, null=True)
     detail = models.TextField(default=0)
+    active = models.BooleanField(default=True)
     date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

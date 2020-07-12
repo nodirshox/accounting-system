@@ -100,7 +100,7 @@ def client_detail(request, pk):
         messages.info(request, 'You are not authorized to view this page.')
         return redirect('404')
     else:
-        orders = Order.objects.filter(client=client).order_by('-date')
+        orders = Order.objects.filter(client=client, active=True).order_by('-date')
         myFilter = ClientFilter(request.GET, queryset=orders)
         clients = myFilter.qs
 
@@ -114,7 +114,7 @@ def client_detail(request, pk):
 # Orders
 @login_required(login_url='login')
 def all_orders(request):
-    orders = Order.objects.all().order_by('-date')
+    orders = Order.objects.filter(active=True).order_by('-date')
     
     paginator = Paginator(orders, ITEMS_PER_PAGE)
     page_number  = request.GET.get('page')
@@ -154,6 +154,33 @@ def create_order(request, pk):
 @login_required(login_url='login')
 def update_order(request, pk):
     pass
+
+@login_required(login_url='login')
+def deactivate_order(request, pk):
+    order = Order.objects.get(id=pk)
+    
+    client = Client.objects.get(id=order.client.id)
+    warehouse = Warehouse.objects.get(user=request.user)
+    if warehouse == client.warehouse:
+        if request.method == 'POST':
+            order.active = False
+            order.save()
+            messages.info(request, 'Order archived successfully.')
+            return redirect('/warehouse/client/' + str(order.client.id))
+        return render(request, 'order/deactivate.html', { 'order': order })
+    else:
+        messages.info(request, 'You are not authorized to view this page.')
+        return redirect('404')
+
+@login_required(login_url='login')
+def archived_orders(request):
+    warehouse = Warehouse.objects.get(user=request.user)
+    #print(warehouse)
+    
+    clients = Client.objects.filter(warehouse=warehouse)
+    #print(clients)
+
+    return render(request, 'order/archived.html')
 
 # Payment
 @login_required(login_url='login')
@@ -221,8 +248,12 @@ def update_payment(request, pk):
 @login_required(login_url='login')
 def delete_payment(request, pk):
     payment = Payment.objects.get(id=pk)
-    payment.delete()
-    return redirect('/warehouse/payment/order/' + str(payment.order.id))
+    if request.method == 'POST':
+        payment.delete()
+        messages.info(request, 'Payment deleted successfully.')
+        return redirect('/warehouse/payment/order/' + str(payment.order.id))
+    
+    return render(request, 'payment/delete.html', { 'payment': payment })
 
 # Recourse
 @login_required(login_url='login')
