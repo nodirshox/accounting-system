@@ -10,12 +10,12 @@ urlpatterns = [
     path('client/', views.all_clients, name='all_clients'),
     path('client/create/', views.create_client, name='create_client'),
     path('client/update/<int:pk>/', views.update_client, name='update_client'),
-    path('client/detail/<int:pk>/', views.client_detail, name='client_detail'),
+    path('client/<int:pk>/', views.client_detail, name='client_detail'),
 
     # Order
     path('order/', views.all_orders, name='all_orders'),
-    path('order/create/<int:pk>/', views.create_order, name='create_order'),
-    path('order/update/<int:pk>/', views.update_order, name='update_order'),
+    path('order/<int:pk>/create/', views.create_order, name='create_order'),
+    path('order/<int:pk>/update/', views.update_order, name='update_order'),
 
     #Payment
     path('payment/', views.all_payments, name='all_payments'),

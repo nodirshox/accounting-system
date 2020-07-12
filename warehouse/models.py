@@ -33,7 +33,6 @@ class Resource(models.Model):
     
 
 class Order(models.Model):
-    warehouse = models.ForeignKey(Warehouse, null=True, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
     product = models.CharField(max_length=256, default=0)
     price = models.BigIntegerField(default=0)

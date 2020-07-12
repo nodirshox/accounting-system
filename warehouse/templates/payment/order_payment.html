@@ -13,7 +13,9 @@
       <div class="card-header">
         <div><b>Product:</b> {{ order.product }}</div>
         <div><b>Quantity:</b> {{ order.quantity }}</div>
-        <div><b>Total price:</b> {{ order.quantity|mul:order.product.cost|intcomma }} so'm</div>
+        <div><b>Details:</b> {{ order.detail }}</div>
+        <div><b>Date:</b> {{ order.date|date:'H:i, d.m.Y' }}</div>
+        <div><b>Total price:</b> {{ order.price|intcomma }} so'm</div>
         <div>
           <b>Status:</b> 
           {% if status == 'Not paid' %} <span class="text-danger font-weight-bold">{{ status }}</span>  ({{ difference|intcomma }} so'm)

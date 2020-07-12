@@ -1,2 +1,2 @@
 # accounting-system
-Django project for warehouse accounting 
+Django project for warehouse accounting system

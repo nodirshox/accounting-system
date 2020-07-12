@@ -18,7 +18,7 @@ def dashboard(request):
         warehouse = Warehouse.objects.get(user=request.user.id)
         clients = Client.objects.filter(warehouse=warehouse.id)
         total_clients = clients.count()
-        orders = Order.objects.filter(warehouse=warehouse.id)
+        orders = Order.objects.all()
         total_orders = orders.count()
         context = { 'total_clients': total_clients, 'total_orders': total_orders }
         return render(request, 'dashboard/main.html', context)
@@ -114,8 +114,7 @@ def client_detail(request, pk):
 # Orders
 @login_required(login_url='login')
 def all_orders(request):
-    warehouse = Warehouse.objects.get(user=request.user)
-    orders = Order.objects.filter(warehouse=warehouse.id).order_by('-date')
+    orders = Order.objects.all().order_by('-date')
     
     paginator = Paginator(orders, ITEMS_PER_PAGE)
     page_number  = request.GET.get('page')
@@ -124,53 +123,37 @@ def all_orders(request):
     context = { 'page_obj': page_obj, 'ITEMS_PER_PAGE': ITEMS_PER_PAGE }
     return render(request, 'order/details.html', context)
 
-"""
-@login_required(login_url='login')
-def create_order(request, pk):
-    client = Client.objects.get(id=pk)
-    form = AddOrderClient()
-    if request.method == 'POST':
-        form = AddOrderClient(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.client = client
-            obj.warehouse = client.warehouse
-            obj.save()
-            return redirect('/warehouse/client/detail/' + str(client.id))
 
-    return render(request, 'order/create.html', { 'client': client, 'form': form })
-"""
 @login_required(login_url='login')
 def create_order(request, pk):
     products = Product.objects.all()
     pack = Pack.objects.all()
     client = Client.objects.get(id=pk)
 
-    if request.method == 'POST':
-        product_id = request.POST['product']
-        quantity = request.POST['quantity']
+    print(client.warehouse)
+    warehouse = Warehouse.objects.get(user=request.user)
+    print(warehouse)
+    if client.warehouse == warehouse:
+        if request.method == 'POST':
+            product_id = request.POST['product']
+            quantity = request.POST['quantity']
 
-        product = Product.objects.get(id=product_id)
-        my_data = Order(client=client, product=product.name, price=product.cost * int(quantity), quantity=quantity, detail=quantity + 'x, ' + product.name + ', ' + str(product.cost))
-        my_data.save()
+            product = Product.objects.get(id=product_id)
+            my_data = Order(client=client, product=product.name, price=product.product_price * int(quantity), quantity=quantity, detail=quantity + 'x, ' + product.name + ', ' + str(product.product_price))
+            my_data.save()
+            messages.info(request, 'Order added successfully.')
+            return redirect('/warehouse/client/' + str(client.id))
 
-    return render(request, 'order/test.html', { 'products': products, 'pack': pack, 'client': client })
+        return render(request, 'order/create.html', { 'products': products, 'pack': pack, 'client': client })
+    else:
+        messages.info(request, 'You are not authorized to view this page.')
+        return redirect('404')
+    
 
 # Fix this
 @login_required(login_url='login')
 def update_order(request, pk):
-    warehouse = Warehouse.objects.get(user=request.user)
-    order = Order.objects.get(id=pk)
-    form = OrderForm(warehouse, instance=order)
-
-    if request.method == 'POST':
-        form = OrderForm(request.POST, instance=order)
-        if form.is_valid():
-            form.save()
-            return redirect('all_orders')
-    
-    return render(request, 'order/update.html', { 'form': form })
-
+    pass
 
 # Payment
 @login_required(login_url='login')
@@ -190,7 +173,8 @@ def client_payment(request, pk):
         else:
             total_paid += payment.money
     order = Order.objects.get(id=pk)
-    total_cost = order.product.cost * order.quantity
+
+    total_cost = order.price
     
     status = None
     difference = 0
