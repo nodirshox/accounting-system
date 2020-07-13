@@ -3,60 +3,83 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="container p-4 card">
-            <h3>Buy back</h3>  
-            <form aciton="." method="POST">
+            <h3>Order</h3>  
+            <form aciton="." method="POST" id="form">
                 {% csrf_token %}
+                <!--<a href="#" class="btn btn-secondary btn-sm"><i class="fas fa-trash fa-xs"></i></a> -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                        <label>Product</label>
+                        <select class="form-control" id="products" name='product' oninput="get_value()">
+                            <option disabled selected>-Select product-</option>
+                            {% for product in products %}
+                            <option value='{{product.product_price}}'>{{ product.name }} - {{ product.product_price|intcomma }} so'm</option>
+                            {% endfor %}
+                        </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" class="form-control" name="quantity" id="quantity" placeholder="0" min="0" autocomplete="off" oninput="get_value()">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                        <label>Price</label>
+                        <input type="number" class="form-control" name="price" id="price" placeholder="0" min="1" autocomplete="off" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                        <label>Bonus</label>
+                        <input type="number" class="form-control" name="bonus" id="bonus" placeholder="0" min="1" autocomplete="off" disabled>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="btn btn-secondary btn-sm" id="add_item"><i class="fas fa-plus fa-xs"></i></a>
                 <div class="form-group">
-                    <label>Product</label>
-                    <select class="form-control" id="product" name='product'>
-                        <option disabled selected>-Select product-</option>
-                        {% for product in products %}
-                        <option value='{{product.id}}'>{{ product.name }} - {{ product.product_price|intcomma }} so'm</option>
-                        {% endfor %}
-                    </select>
+                    <label>Cash</label>
+                    <input type="number" class="form-control" name="quantity" placeholder="0" min="1" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label>Quantity</label>
+                    <label>Plastic</label>
+                    <input type="number" class="form-control" name="quantity" placeholder="0" min="1" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Bonus</label>
                     <input type="number" class="form-control" name="quantity" placeholder="0" min="1" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Add" class="btn btn-primary">
-                    <a href="{% url 'products' %}" class="btn btn-light">See all</a>
                 </div>
+
             </form>
         </div>
-    </div>
-    <div class="col-md-6">
-        <div class="container p-4 card">
-            <h3>Packs</h3>  
-            <form aciton="." method="POST">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label>Packs</label>
-                    <select class="form-control" id="pack" name='pack'>
-                        {% for one_pack in pack %}
-                        <option value='{{one_pack.id}}'>{{ one_pack.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Quantity</label>
-                    <input type="number" class="form-control" name="quantity" placeholder="0" min="1" autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Add" class="btn btn-primary">
-                    <a href="{% url 'packages' %}" class="btn btn-light">See all</a>
-                </div>
-            </form>
-        </div>
-    </div>        
+    </div> 
 </div>
 
 <div>
     <a href="{% url 'client_detail' client.id %}" class="btn btn-primary"><i class="fas fa-chevron-circle-left fa-xs"></i> Back</a>
 </div>
 
+<script>
+    function get_value() {
+      var price = document.getElementById("products").value;
+      var quantity = document.getElementById("quantity").value;
+      document.getElementById("price").value = price * quantity;
+      document.getElementById("bonus").value = price * quantity / {{ currency }};
+    }
+
+    function add_item() {
+        document.getElementById("form").innerHTML = document.getElementById("form").innerHTML + '<a href="#" class="btn btn-success">AAA</a>';
+    }
+    document.getElementById('add_item').addEventListener('click', add_item);
+</script>
 
 {% endblock content %}

@@ -127,12 +127,9 @@ def all_orders(request):
 @login_required(login_url='login')
 def create_order(request, pk):
     products = Product.objects.all()
-    pack = Pack.objects.all()
     client = Client.objects.get(id=pk)
-
-    print(client.warehouse)
     warehouse = Warehouse.objects.get(user=request.user)
-    print(warehouse)
+    currency = Currency.objects.get(id=1)
     if client.warehouse == warehouse:
         if request.method == 'POST':
             product_id = request.POST['product']
@@ -144,7 +141,7 @@ def create_order(request, pk):
             messages.info(request, 'Order added successfully.')
             return redirect('/warehouse/client/' + str(client.id))
 
-        return render(request, 'order/create.html', { 'products': products, 'pack': pack, 'client': client })
+        return render(request, 'order/create.html', { 'products': products, 'client': client, 'currency': currency })
     else:
         messages.info(request, 'You are not authorized to view this page.')
         return redirect('404')

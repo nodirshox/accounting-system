@@ -34,11 +34,18 @@ class Resource(models.Model):
 
 class Order(models.Model):
     client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
+    active = models.BooleanField(default=True)
+    date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.client.name
+
+class OrderProduct(models.Model):
+    order = models.ForeignKey(Order, null=True, on_delete=models.CASCADE)
     product = models.CharField(max_length=256, default=0)
     price = models.BigIntegerField(default=0)
     quantity = models.IntegerField(default=0, null=True)
     detail = models.TextField(default=0)
-    active = models.BooleanField(default=True)
     date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
