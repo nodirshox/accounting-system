@@ -1,0 +1,94 @@
+{% extends 'includes/base.html' %}
+{% load humanize %}
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label>Currency</label>
+            <input type="number" class="form-control" id="currency" value="{{ currency }}" disabled>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="container p-4 card">
+            <form aciton="." method="POST" id="form">
+                <h3>Order</h3>
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                        <label>Product</label>
+                            <select class="form-control" id="products" name='product' oninput="get_value()">
+                                <option disabled selected>-Select product-</option>
+                                {% for product in products %}
+                                <option value='{{product.product_price}}'>{{ product.name }} - {{ product.product_price|intcomma }} so'm</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="number" class="form-control" name="quantity" id="quantity" placeholder="0" min="0" autocomplete="off" oninput="get_value()">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input type="number" class="form-control" name="price" id="price" placeholder="0" min="1" autocomplete="off" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Bonus</label>
+                            <input type="number" class="form-control" name="bonus" id="bonus" placeholder="0" min="1" autocomplete="off" disabled>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="btn btn-secondary btn-sm" id="add_item"><i class="fas fa-plus fa-xs"></i></a>
+                <hr>
+                <h3>Payment</h3>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Cash</label>
+                            <input type="number" class="form-control" name="cash" placeholder="0" min="0" id="cash" autocomplete="off" oninput="get_total()" >
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Plastic</label>
+                            <input type="number" class="form-control" name="plastic" placeholder="0" min="0" id="plastic" autocomplete="off" oninput="get_total()">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Bonus</label>
+                            <input type="number" class="form-control" name="bonus_point" placeholder="0" min="0" id="bonus_point" autocomplete="off" oninput="get_total()">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Total(so'm)</label>
+                            <input type="number" class="form-control" name="total" placeholder="0" min="0" id="total" autocomplete="off" disabled>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="btn btn-secondary btn-sm" id="add_item"><i class="fas fa-plus fa-xs"></i></a>
+            </form>
+        </div>
+    </div> 
+</div>
+
+<div>
+    <a href="#" class="btn btn-primary"><i class="fas fa-chevron-circle-left fa-xs"></i> Back</a>
+</div>
+
+{% endblock content %}

@@ -126,26 +126,27 @@ def all_orders(request):
 
 @login_required(login_url='login')
 def create_order(request, pk):
-    products = Product.objects.all()
     client = Client.objects.get(id=pk)
-    warehouse = Warehouse.objects.get(user=request.user)
+    if request.method == 'POST':
+        new_order = Order(client=client)
+        new_order.save()
+        messages.info(request, 'Order created successfully.')
+        return redirect('/warehouse/client/' + str(client.id))
+    return render(request, 'order/create.html', { 'client': client })
+
+@login_required(login_url='login')
+def order_detail(request, pk):
+    order = Order.objects.get(id=pk)
+    return render(request, 'order/details.html', { 'order': order })
+
+@login_required(login_url='login')
+def add_product(request, pk):
     currency = Currency.objects.get(id=1)
-    if client.warehouse == warehouse:
-        if request.method == 'POST':
-            product_id = request.POST['product']
-            quantity = request.POST['quantity']
+    products = Product.objects.all()
 
-            product = Product.objects.get(id=product_id)
-            my_data = Order(client=client, product=product.name, price=product.product_price * int(quantity), quantity=quantity, detail=quantity + 'x, ' + product.name + ', ' + str(product.product_price))
-            my_data.save()
-            messages.info(request, 'Order added successfully.')
-            return redirect('/warehouse/client/' + str(client.id))
+    context = { 'currency': currency, 'products': products }
+    return render(request, 'order/add_order.html', context)
 
-        return render(request, 'order/create.html', { 'products': products, 'client': client, 'currency': currency })
-    else:
-        messages.info(request, 'You are not authorized to view this page.')
-        return redirect('404')
-    
 
 # Fix this
 @login_required(login_url='login')

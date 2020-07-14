@@ -21,7 +21,7 @@
         {% for product in products %}
         <tr>
             <td>{{ product.quantity }}</td>
-            <td>{{ product }}</td>
+            <td>{{ product.product.name }}</td>
         </tr>
         {% endfor %}
     </tbody>

@@ -1,5 +1,6 @@
 media
-static
+static/dist
+static/plugins
 account/migrations
 products/migrations
 warehouse/migrations
