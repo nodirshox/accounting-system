@@ -18,7 +18,7 @@
                 <h3>Order</h3>
                 {% csrf_token %}
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-3">
                         <div class="form-group">
                         <label>Product</label>
                             <select class="form-control" id="products" name='product' oninput="get_value()">
@@ -29,27 +29,26 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <label>Quantity</label>
                             <input type="number" class="form-control" name="quantity" id="quantity" placeholder="0" min="0" autocomplete="off" oninput="get_value()">
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <label>Price</label>
                             <input type="number" class="form-control" name="price" id="price" placeholder="0" min="1" autocomplete="off" disabled>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <label>Bonus</label>
                             <input type="number" class="form-control" name="bonus" id="bonus" placeholder="0" min="1" autocomplete="off" disabled>
                         </div>
                     </div>
                 </div>
+
                 <a href="#" class="btn btn-secondary btn-sm" id="add_item"><i class="fas fa-plus fa-xs"></i></a>
                 <hr>
                 <h3>Payment</h3>
@@ -79,6 +78,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="#" class="btn btn-secondary btn-sm" id="add_item"><i class="fas fa-plus fa-xs"></i></a>
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group">
@@ -87,7 +87,6 @@
                         </div>
                     </div>
                 </div>
-                <a href="#" class="btn btn-secondary btn-sm" id="add_item"><i class="fas fa-plus fa-xs"></i></a>
 
                 <div class="row">
                     <div class="col-sm-12">

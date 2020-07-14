@@ -7,8 +7,7 @@ class Warehouse(models.Model):
     bonus = models.IntegerField(default=0, null=True)
     cash = models.IntegerField(default=0, null=True)
     terminal = models.IntegerField(default=0, null=True)
-    balance = models.IntegerField(default=0, null=True)
-    active = models.BooleanField(default=True)
+    active_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.first_name

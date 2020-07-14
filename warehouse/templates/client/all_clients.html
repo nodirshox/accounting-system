@@ -18,8 +18,10 @@
               <div class="card-tools">
                 <div class="input-group input-group-sm" style="width: 275px;">
                   {{ myFilter.form }}
-                  <button type="submit" class="btn btn-default btn-sm"><i class="fas fa-search fa-xs"></i></button>
-                  <a href="{% url 'all_clients' %}" class="btn btn-default btn-sm"><i class="fas fa-stream fa-xs"></i></a>  
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-default btn-sm"><i class="fas fa-search fa-xs"></i></button>
+                    <a href="{% url 'all_clients' %}" class="btn btn-default btn-sm"><i class="fas fa-stream fa-xs"></i></a>    
+                  </div>
                 </div>
               </div>
               <!-- <a href="{% url 'all_clients' %}" class="btn btn-default btn-sm"><i class="fas fa-stream fa-xs"></i></a> -->

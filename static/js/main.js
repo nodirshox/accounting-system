@@ -16,7 +16,7 @@ function get_value() {
     var cash = document.getElementById("cash").value;
     var plastic = document.getElementById("plastic").value;
     var bonus_point = document.getElementById("bonus_point").value;
-    var all = check(parseFloat(cash)) + check(parseFloat(plastic)) + check(parseFloat(bonus_point) * parseFloat(currency) * 0.95 );
+    var all = check(parseFloat(cash)) + check(parseFloat(plastic)) + check(parseFloat(bonus_point) * parseFloat(currency) * 0.95238 );
     document.getElementById('total').value = all;
 
     
