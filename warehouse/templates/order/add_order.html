@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-3">
         <div class="form-group">
             <label>Currency</label>
             <input type="number" class="form-control" id="currency" value="{{ currency }}" disabled>
@@ -54,22 +54,28 @@
                 <hr>
                 <h3>Payment</h3>
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <label>Cash</label>
-                            <input type="number" class="form-control" name="cash" placeholder="0" min="0" id="cash" autocomplete="off" oninput="get_total()" >
+                            <input type="number" class="form-control" name="cash" placeholder="0" min="0" id="cash" autocomplete="off" oninput="get_value()" >
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <label>Plastic</label>
-                            <input type="number" class="form-control" name="plastic" placeholder="0" min="0" id="plastic" autocomplete="off" oninput="get_total()">
+                            <input type="number" class="form-control" name="plastic" placeholder="0" min="0" id="plastic" autocomplete="off" oninput="get_value()">
                         </div>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <label>Bonus</label>
-                            <input type="number" class="form-control" name="bonus_point" placeholder="0" min="0" id="bonus_point" autocomplete="off" oninput="get_total()">
+                            <input type="number" class="form-control" name="bonus_point" placeholder="0" min="0" id="bonus_point" autocomplete="off" oninput="get_value()">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Suggestion Bonus</label>
+                            <input type="number" class="form-control" name="suggestion_bonus_point" placeholder="0" min="0" id="suggestion_bonus_point" autocomplete="off" oninput="get_value()" disabled>
                         </div>
                     </div>
                 </div>
@@ -82,6 +88,15 @@
                     </div>
                 </div>
                 <a href="#" class="btn btn-secondary btn-sm" id="add_item"><i class="fas fa-plus fa-xs"></i></a>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Difference</label>
+                            <input type="number" class="form-control" name="difference" placeholder="0" min="0" id="difference" autocomplete="off" disabled oninput="get_value()">
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     </div> 

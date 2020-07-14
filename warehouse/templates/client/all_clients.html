@@ -15,9 +15,14 @@
         <div class="card-tools">
           <div id="example1_filter" class="dataTables_filter">
             <form method="GET">
-              {{ myFilter.form }}
-              <button type="submit" class="btn btn-default btn-sm"><i class="fas fa-search fa-xs"></i></button>
-              <a href="{% url 'all_clients' %}" class="btn btn-default btn-sm"><i class="fas fa-stream fa-xs"></i></a>
+              <div class="card-tools">
+                <div class="input-group input-group-sm" style="width: 275px;">
+                  {{ myFilter.form }}
+                  <button type="submit" class="btn btn-default btn-sm"><i class="fas fa-search fa-xs"></i></button>
+                  <a href="{% url 'all_clients' %}" class="btn btn-default btn-sm"><i class="fas fa-stream fa-xs"></i></a>  
+                </div>
+              </div>
+              <!-- <a href="{% url 'all_clients' %}" class="btn btn-default btn-sm"><i class="fas fa-stream fa-xs"></i></a> -->
             </form>
           </div>
         </div>
@@ -45,7 +50,7 @@
           </tbody>
         </table>
         {% else %}
-        <div class="text-secondary text-center m-2">No clients found</div>
+        <div class="text-secondary text-center m-2">No clients found. <br /><a href="{% url 'all_clients' %}">Show all</a></div>
         {% endif %}
       </div>
       <div class="card-footer clearfix">
