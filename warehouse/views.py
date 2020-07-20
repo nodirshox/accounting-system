@@ -137,12 +137,45 @@ def create_order(request, pk):
 @login_required(login_url='login')
 def order_detail(request, pk):
     order = Order.objects.get(id=pk)
-    return render(request, 'order/details.html', { 'order': order })
+    orderProduct = OrderProduct.objects.filter(order=pk)
+
+    paginator = Paginator(orderProduct, ITEMS_PER_PAGE)
+    page_number  = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = { 'page_obj': page_obj, 'ITEMS_PER_PAGE': ITEMS_PER_PAGE, 'order': order }
+    return render(request, 'order/details.html', context)
 
 @login_required(login_url='login')
 def add_product(request, pk):
     currency = Currency.objects.get(id=1)
     products = Product.objects.all()
+
+    if request.method == 'POST':
+        #order itself
+        order = Order.objects.get(id=pk)
+        print(order.id)
+        
+        #product
+        product = request.POST.get('product')
+        x = product.split("|")
+        product_id = x[0]
+        order_product = Product.objects.get(id=product_id)
+        print(order_product.name)
+
+        #price
+        price = request.POST.get('price')
+        print(price)
+
+        #quantity
+        quantity = request.POST.get('quantity')
+        print(quantity)
+
+        #detail
+        order_product = OrderProduct(order=order, product=order_product.name, price=price, quantity=quantity, detail=str(order_product.name) + ' ' + str(quantity) + 'x ' + x[1])
+        order_product.save()
+        
+        return redirect('/warehouse/order/' + str(pk))
 
     context = { 'currency': currency, 'products': products }
     return render(request, 'order/add_order.html', context)

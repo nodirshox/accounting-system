@@ -45,6 +45,7 @@ class OrderProduct(models.Model):
     price = models.BigIntegerField(null=True)
     quantity = models.IntegerField(null=True)
     detail = models.TextField(blank=True)
+    bonus = models.IntegerField()
     date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

@@ -1,6 +1,7 @@
 {% extends 'includes/base.html' %}
 {% load mathfilters %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 
@@ -15,8 +16,9 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Client</th>
                 <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
                 <th>Date</th>
                 <!--<th>Update</th>
                 <th>Delete</th>-->
@@ -26,8 +28,9 @@
                 {% for order in page_obj %}
                     <tr>
                       <td>{{ page_obj.number|mul:ITEMS_PER_PAGE|addition:forloop.counter|sub:ITEMS_PER_PAGE }}</td>
-                      <td><a href="{% url 'client_payment' order.id %}">{{ order.client }}</a></td>
-                      <td>{{ order.product }} - {{ order.quantity }}</td>
+                      <td>{{ order.product }}</td>
+                      <td>{{ order.quantity }}</td>                      
+                      <td>{{ order.price|intcomma }} so'm</td>
                       <td>{{ order.date|date:'d.m.Y'}}</td>
                       <!--<td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
                       <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>-->
