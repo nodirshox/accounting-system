@@ -17,24 +17,10 @@ class ClientForm(forms.ModelForm):
             'number'
         ]
 
-class AddPaymentClient(forms.ModelForm):
-    class Meta:
-        model = Payment
-        fields = [ 'payment', 'money' ]
 
-
-class PaymentForm(forms.ModelForm):
-    money = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))
-    class Meta:
-        model = Payment
-        fields = [
-            'order',
-            'payment',
-            'money'
-        ]
 
 class ResourceForm(forms.ModelForm):
-    quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1}))
+    quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'min': 1, 'autocomplete': 'off'}))
     class Meta:
         model = Resource
         fields = [

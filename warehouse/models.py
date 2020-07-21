@@ -45,7 +45,7 @@ class OrderProduct(models.Model):
     price = models.BigIntegerField(null=True)
     quantity = models.IntegerField(null=True)
     detail = models.TextField(blank=True)
-    bonus = models.IntegerField()
+    bonus = models.IntegerField(null=True)
     date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -53,14 +53,7 @@ class OrderProduct(models.Model):
     
 class Payment(models.Model):
     order = models.ForeignKey(Order, null=True, on_delete=models.CASCADE)
-    TYPE_OF_PAYMENT = (
-        ('cash', 'Cash'),
-        ('terminal', 'Plastic card'),
-        ('bonus', 'Bonus')
-    )
-    payment = models.CharField(max_length=200, null=True, choices=TYPE_OF_PAYMENT)
-    money = models.IntegerField()
+    cash = models.IntegerField()
+    plastic = models.IntegerField()
+    bonus = models.FloatField()
     date = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return str(self.money) + ', ' + str(self.payment)

@@ -139,11 +139,9 @@ def order_detail(request, pk):
     order = Order.objects.get(id=pk)
     orderProduct = OrderProduct.objects.filter(order=pk)
 
-    paginator = Paginator(orderProduct, ITEMS_PER_PAGE)
-    page_number  = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    payments = Payment.objects.filter(order=pk)
 
-    context = { 'page_obj': page_obj, 'ITEMS_PER_PAGE': ITEMS_PER_PAGE, 'order': order }
+    context = { 'orderProduct': orderProduct, 'payments': payments, 'order': order }
     return render(request, 'order/details.html', context)
 
 @login_required(login_url='login')
@@ -154,27 +152,32 @@ def add_product(request, pk):
     if request.method == 'POST':
         #order itself
         order = Order.objects.get(id=pk)
-        print(order.id)
-        
+
         #product
         product = request.POST.get('product')
         x = product.split("|")
         product_id = x[0]
         order_product = Product.objects.get(id=product_id)
-        print(order_product.name)
-
-        #price
-        price = request.POST.get('price')
-        print(price)
-
-        #quantity
-        quantity = request.POST.get('quantity')
-        print(quantity)
 
         #detail
-        order_product = OrderProduct(order=order, product=order_product.name, price=price, quantity=quantity, detail=str(order_product.name) + ' ' + str(quantity) + 'x ' + x[1])
+        order_product = OrderProduct(order=order, product=order_product.name, price=request.POST.get('price'), quantity=request.POST.get('quantity'), bonus=request.POST.get('price_in_currency'), detail=str(order_product.name) + ' ' + str(request.POST.get('quantity')) + 'x ' + x[1])
         order_product.save()
         
+        cash = request.POST.get('cash')
+        plastic = request.POST.get('plastic')
+        bonus = request.POST.get('bonus')
+        if not cash.isdigit():
+            cash = 0
+        
+        if not plastic.isdigit():
+            plastic = 0
+        
+        if not float(bonus) > 0:
+            bonus = 0
+
+        payment = Payment(order=order, cash=cash, plastic=plastic, bonus=bonus)
+        payment.save()
+
         return redirect('/warehouse/order/' + str(pk))
 
     context = { 'currency': currency, 'products': products }

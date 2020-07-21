@@ -15,22 +15,22 @@
           <table class="table table-hover text-nowrap">
             <thead>
               <tr>
-                <th>#</th>
                 <th>Product</th>
                 <th>Quantity</th>
                 <th>Price</th>
+                <th>Gano price</th>
                 <th>Date</th>
                 <!--<th>Update</th>
                 <th>Delete</th>-->
               </tr>
             </thead>
             <tbody>
-                {% for order in page_obj %}
+                {% for order in orderProduct %}
                     <tr>
-                      <td>{{ page_obj.number|mul:ITEMS_PER_PAGE|addition:forloop.counter|sub:ITEMS_PER_PAGE }}</td>
                       <td>{{ order.product }}</td>
                       <td>{{ order.quantity }}</td>                      
                       <td>{{ order.price|intcomma }} so'm</td>
+                      <td>{{ order.bonus }}</td>
                       <td>{{ order.date|date:'d.m.Y'}}</td>
                       <!--<td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
                       <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>-->
@@ -39,26 +39,45 @@
             </tbody>
           </table>
         </div>
-        <div class="card-footer clearfix">
-          <ul class="pagination pagination-sm m-0 float-right">
-            {% if page_obj.has_previous %}
-            <li class="page-item"><a href="?page=1" class="page-link">&laquo; First</a></li>
-            <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">Previous</a></li>
-            {% endif %}
+      </div>
+    </div>
+  </div>
 
-            <li class="page-item">
-                <span class="page-link">{{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-            </li>
-
-            {% if page_obj.has_next %}
-                <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">Next</a></li>
-                <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">Last &raquo;</a></li>
-            {% endif %}
-          </ul>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Payment</h3>
+        </div>
+        <div class="card-body table-responsive p-0">
+          <table class="table table-hover text-nowrap">
+            <thead>
+              <tr>
+                <th>Cash</th>
+                <th>Plastic</th>
+                <th>Bonus</th>
+                <th>Date</th>
+                <!--<th>Update</th>
+                <th>Delete</th>-->
+              </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                    <tr>
+                      <td>{{ payment.cash|intcomma }}</td>
+                      <td>{{ payment.plastic|intcomma }}</td>                      
+                      <td>{{ payment.bonus }}</td>
+                      <td>{{ order.date|date:'d.m.Y'}}</td>
+                      <!--<td><a href="{% url 'update_order' order.id %}"><i class="fas fa-pen"></i></a></td>
+                      <td><a href="#"><i class="fas fa-trash-alt"></i></a></td>-->
+                    </tr>
+                {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
 
-  <div><a href="{% url 'add_product' order.id %}" class="btn btn-primary">Add</a></div>
+  <div><a href="{% url 'add_product' order.id %}" class="btn btn-primary"><i class="fas fa-plus fa-xs"></i> Add</a></div>
 {% endblock content %}

@@ -2,17 +2,17 @@
 {% load humanize %}
 {% block content %}
 
-<div class="row">
-    <form aciton="." method="POST" id="form">{% csrf_token %}
-    <div class="col-md-6">
-        <div class="container p-4 card">
-        <input type="hidden" class="form-control" id="currency" value="{{ currency }}" disabled>
-                <h3>Order</h3>
+<form aciton="." method="POST" id="form">{% csrf_token %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="container p-4 card">
+                <input type="hidden" class="form-control" id="currency" value="{{ currency }}" disabled>
+                <h3>Product</h3>
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="form-group">
-                        <label>Product</label>
-                            <select class="form-control" id="products" name='product' oninput="get_value()">
+                            <label>Product</label>
+                            <select class="form-control" id="product_info" name='product' oninput="get_value()">
                                 <option disabled selected>-Select product-</option>
                                 {% for product in products %}
                                 <option value='{{product.id}}|{{product.product_price}}'>{{ product.name }} - {{ product.product_price|intcomma }} so'm</option>
@@ -34,68 +34,69 @@
                     </div>
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label>Gano price</label>
-                            <input type="number" class="form-control" name="bonus" id="bonus" placeholder="0" autocomplete="off" disabled>
+                            <label>Currency</label>
+                            <input type="number" class="form-control" name="price_in_currency" id="price_in_currency" placeholder="0" autocomplete="off" oninput="get_value()" readonly="readonly">
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-primary btn-sm" id="add_item"><i class="fas fa-plus fa-xs"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="container p-4 card">
+                <h3>Payment</h3>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Cash</label>
+                            <input type="number" class="form-control" name="cash" placeholder="0" id="cash" autocomplete="off" oninput="get_value()" >
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Plastic</label>
+                            <input type="number" class="form-control" name="plastic" placeholder="0" min="0" id="plastic" autocomplete="off" oninput="get_value()">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Bonus</label>
+                            <input type="number" class="form-control" step="0.01" name="bonus" placeholder="0" min="0" id="bonus" autocomplete="off" oninput="get_value()">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label>Suggestion Bonus</label>
+                            <input type="number" class="form-control" name="suggestion_bonus_point" placeholder="0" min="0" id="suggestion_bonus_point" autocomplete="off" oninput="get_value()" disabled>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-primary btn-sm" id="add_item"><i class="fas fa-plus fa-xs"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container p-4 card">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Total(so'm)</label>
+                            <input type="number" class="form-control" name="total" placeholder="0" min="0" id="total_money" autocomplete="off" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Difference</label>
+                            <input type="number" class="form-control" name="difference" placeholder="0" id="difference" autocomplete="off" disabled oninput="get_value()">
                         </div>
                     </div>
                 </div>
-                <a href="#" class="btn btn-light btn-sm" id="add_item"><i class="fas fa-plus fa-xs"></i></a>
-            
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="container p-4 card">
-            <h3>Payment</h3>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>Cash</label>
-                        <input type="number" class="form-control" name="cash" placeholder="0" id="cash" autocomplete="off" oninput="get_value()" >
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>Plastic</label>
-                        <input type="number" class="form-control" name="plastic" placeholder="0" min="0" id="plastic" autocomplete="off" oninput="get_value()">
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>Bonus</label>
-                        <input type="number" class="form-control" name="bonus_point" placeholder="0" min="0" id="bonus_point" autocomplete="off" oninput="get_value()">
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        <label>Suggestion Bonus</label>
-                        <input type="number" class="form-control" name="suggestion_bonus_point" placeholder="0" min="0" id="suggestion_bonus_point" autocomplete="off" oninput="get_value()" disabled>
-                    </div>
-                </div>
+                <input type="submit" value="Add" class="btn btn-primary">
             </div>
-            <a href="#" class="btn btn-light btn-sm" id="add_item"><i class="fas fa-plus fa-xs"></i></a>
         </div>
     </div>
-    <div class="col-md-12">
-        <div class="container p-4 card">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>Total(so'm)</label>
-                        <input type="number" class="form-control" name="total" placeholder="0" min="0" id="total" autocomplete="off" disabled>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>Difference</label>
-                        <input type="number" class="form-control" name="difference" placeholder="0" id="difference" autocomplete="off" disabled oninput="get_value()">
-                    </div>
-                </div>
-            </div>
-            <input type="submit" value="Add" class="btn btn-primary">
-        </form>
-        </div>
-    </div>
-</div>
+</form>
 
 <div>
     <a href="#" class="btn btn-primary"><i class="fas fa-chevron-circle-left fa-xs"></i> Back</a>
